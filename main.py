@@ -2,24 +2,11 @@ import tkinter
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
-import mysql.connector
 from datetime import datetime
 import requests
 from io import BytesIO
 import threading
-
-conn = mysql.connector.connect(host="50.6.18.240",
-                                 user="ukjirumy_er_app",
-                                 password="dbPa$$Capstone26",
-                                 database="ukjirumy_ElevateRetail")
-
-cursor = conn.cursor()
-
-if (conn.is_connected()):
-        print("Connection Successful!")
-else:
-        print("Connection Failed.")
-
+from database import cursor
 
 def getProducts():
         cursor.execute(""" SELECT Product.Product_Name, Product.Product_Description, Product_Category.Category_Name, Inventory.Quantity, Inventory.Unit_Price, Product.Image_URL
