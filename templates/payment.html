@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Payment</title>
+    <style>
+        /* background and font */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e8d8c3;
+        }
+
+        /* header bar */
+        .header {
+            background: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* payment container */
+        .payment-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .card-fields,
+        .email-field {
+            display: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .half {
+            flex: 1;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* button styles */
+        .btn-confirm {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!--page header w/ logo-->
+    <div class="header">
+        <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
+        <h2>Payment</h2>
+    </div>
+
+
+    <div class="payment-container">
+        <form>
+            <label for="payment-method">Select Payment Method</label>
+            <select id="payment-method" onchange="toggleFields()">
+                <option value="credit-card">Credit Card</option>
+                <option value="debit-card">Debit Card</option>
+                <option value="apple-pay">Apple Pay</option>
+                <option value="google-pay">Google Pay</option>
+                <option value="paypal">PayPal</option>
+            </select>
+
+            <!-- Email field for Apple Pay / Google Pay / PayPal -->
+            <div id="email-field" class="email-field">
+                <label for="email">Account Email</label>
+                <input type="email" id="email" placeholder="example@email.com">
+            </div>
+
+            <!-- Card Details Section -->
+            <div id="card-fields" class="card-fields">
+
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" maxlength="19" placeholder="0000 0000 0000 0000"
+                    oninput="formatCardNumber(this)">
+
+                <label for="card-holder">Card Holder Name</label>
+                <input type="text" id="card-holder"
+                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
+
+                <div class="row">
+                    <div class="half">
+                        <label for="card-expiration">Expiration Date</label>
+                        <input type="text" id="card-expiration" placeholder="MM/YY" maxlength="5"
+                            oninput="formatExpiry(this)">
+                    </div>
+
+                    <div class="half">
+                        <label for="card-cvv">CVV</label>
+                        <input type="text" id="card-cvv" maxlength="4" placeholder="0000"
+                            oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="btn-confirm">Confirm Payment</button>
+                <button type="button" class="btn-back" onclick="history.back()">Go Back</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function toggleFields() {
+            const method = document.getElementById("payment-method").value;
+            const cardFields = document.getElementById("card-fields");
+            const emailField = document.getElementById("email-field");
+
+            const isCard = (method === "credit-card" || method === "debit-card");
+            const isEmail = (method === "apple-pay" || method === "google-pay" || method === "paypal");
+
+            cardFields.style.display = isCard ? "block" : "none";
+            emailField.style.display = isEmail ? "block" : "none";
+        }
+
+        function formatCardNumber(input) {
+            let digits = input.value.replace(/\\D/g, "").slice(0, 16);
+            let formatted = digits.match(/.{1,4}/g)?.join(" ") || "";
+            input.value = formatted;
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, "");
+
+            if (value.length === 0) {
+                input.value = "";
+                return;
+            }
+
+            if (value.length >= 3) {
+                let month = value.slice(0, 2);
+                let year = value.slice(2, 4);
+                if (parseInt(month) > 12) month = "12";
+                if (parseInt(month) === 0) month = "01";
+                input.value = month + "/" + year;
+            } else {
+                input.value = value;
+            }
+        }
+
+        toggleFields();
+    </script>
+</body>
+
+</html>
