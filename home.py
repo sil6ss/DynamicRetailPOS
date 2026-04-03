@@ -2,15 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 from cart import cart_bp
 import atexit
+import os
+from dotenv import load_dotenv
 
 home = Flask(__name__)
 home.secret_key = "elevate-retail-secret-key"
 home.register_blueprint(cart_bp)
 
-conn = mysql.connector.connect(host="50.6.18.240",
-                               user="ukjirumy_er_app",
-                               password="dbPa$$Capstone26",
-                               database="ukjirumy_ElevateRetail")
+host = os.getenv("HOST")
+user= os.getenv("USER")
+passw = os.getenv("PASS")
+db = os.getenv("DATA")
+
+conn = mysql.connector.connect(host=host, user=user, password=passw, database=db)
 
 cursor = conn.cursor()
 
