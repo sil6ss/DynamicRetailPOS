@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 home = Flask(__name__)
 home.secret_key = "elevate-retail-secret-key"
 home.register_blueprint(cart_bp)
-
+load_dotenv()
 host = os.getenv("HOST")
 user= os.getenv("USER")
 passw = os.getenv("PASS")
@@ -52,9 +52,11 @@ def home_page():
         session["products"] = get_products()
 
     products = session.get("products", [])
+    cart = session.get("cart", [])
     return render_template(
         "home.html",
-        products=products
+        products=products,
+        cart=cart
     )
 
 @home.route("/add_cart", methods=["POST"])
@@ -77,7 +79,7 @@ def add_to_cart():
             item["quantity"] += 1
             session["cart"] = cart
             session.modified = True
-            return redirect(url_for("cart.cart"))
+            return redirect(url_for("home_page"))
     cart.append(product)
     session["cart"] = cart
     session.modified = True
