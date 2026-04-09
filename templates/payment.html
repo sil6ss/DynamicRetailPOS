@@ -130,10 +130,12 @@
                 <input type="text" id="address" placeholder="123 Main St">
 
                 <label for="city">City</label>
-                <input type="text" id="city" placeholder="City">
+                <input type="text" id="city" placeholder="City"
+                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');">
 
                 <label for="state">State</label>
-                <input type="text" id="state" placeholder="State">
+                <input type="text" id="state" placeholder="State"
+                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');">
 
                 <label for="zip">ZIP Code</label>
                 <input type="text" id="zip" placeholder="ZIP Code" maxlength="5"
@@ -163,20 +165,16 @@
                     <input type="email" id="email" placeholder="example@example.com">
                 </div>
 
-            <!-- Card Details Section -->
-            <div id="card-fields" class="card-fields">
+                <!-- Card Details Section -->
+                <div id="card-fields" class="card-fields">
 
-                <label for="card-number">Card Number</label>
-                <input type="tel" id="card-number" name="card-number" maxlength="19" placeholder="0000 0000 0000 0000"
-                       inputmode="numeric"
-                       pattern="[\d ]{13,19}"
-                       autocomplete="cc-number"
-                       required
-                        oninput="formatCardNumber(this)">
+                    <label for="card-number">Card Number</label>
+                    <input type="tel" id="card-number" name="card-number" maxlength="19"
+                        placeholder="0000 0000 0000 0000" inputmode="numeric" pattern="[\d ]{13,19}"
+                        autocomplete="cc-number" required oninput="formatCardNumber(this)">
 
-                <label for="card-holder">Card Holder Name</label>
-                <input type="text" id="card-holder"
-                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
+                    <label for="card-holder">Card Holder Name</label>
+                    <input type="text" id="card-holder" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
 
                     <div class="row">
                         <div class="half">
@@ -233,19 +231,12 @@
 
         function formatCardNumber(input) {
             let cursorPos = input.selectionStart;
-
             let digits = input.value.replace(/\D/g, '');
-
             digits = digits.substring(0, 16);
-
             let formatted = digits.replace(/(.{4})/g, '$1 ').trim();
-
             let oldSpacesBefore = (input.value.substring(0, cursorPos).match(/ /g) || []).length;
-
             input.value = formatted;
-
             let newCursorPos = cursorPos - oldSpacesBefore + (formatted.substring(0, cursorPos).match(/ /g) || []).length;
-
             input.setSelectionRange(newCursorPos, newCursorPos);
         }
 
