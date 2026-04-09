@@ -167,6 +167,23 @@
     .proceed-cart:hover{
         background: #0048ff;
     }
+    .cart-side-tile{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    text-align:center;
+    padding: 5px;
+    margin-bottom: 5px;
+    background: white;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    }
+    .cart-side-tile img {
+    width: 30%;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    }
     </style>
 </head>
 <body>
@@ -182,6 +199,10 @@
     <div class="cart-main">
 <div class="items-container">
     <h2>Available Products</h2>
+    <form action="/" method="GET">
+    <input type="text" name="q" placeholder="Search items..." value="{{ request.args.get('q', '') }}">
+    <button type="submit">Search</button>
+</form>
     <section class="items">
         {% if products %}
             {% for item in products %}
@@ -212,7 +233,10 @@
     <div class="side-panel">
             {% if cart %}
                 {% for item in cart %}
-                <p>{{item.quantity}}x {{ item.name }}</p>
+                <div class="cart-side-tile">
+                   <img src="{{ item.image }}" alt="{{ item.name }}">
+                    <p>{{item.quantity}}x {{ item.name }}</p>
+                </div>
                 {% endfor %}
         {% else %}
             <p class="empty-cart">Nothing is Available.</p>
