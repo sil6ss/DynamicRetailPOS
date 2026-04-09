@@ -163,10 +163,20 @@
                     <input type="email" id="email" placeholder="example@example.com">
                 </div>
 
-                <!-- Card fields -->
-                <div id="card-fields" class="card-fields">
-                    <label for="card-number">Card Number</label>
-                    <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
+            <!-- Card Details Section -->
+            <div id="card-fields" class="card-fields">
+
+                <label for="card-number">Card Number</label>
+                <input type="tel" id="card-number" name="card-number" maxlength="19" placeholder="0000 0000 0000 0000"
+                       inputmode="numeric"
+                       pattern="[\d ]{13,19}"
+                       autocomplete="cc-number"
+                       required
+                        oninput="formatCardNumber(this)">
+
+                <label for="card-holder">Card Holder Name</label>
+                <input type="text" id="card-holder"
+                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
 
                     <div class="row">
                         <div class="half">
@@ -213,10 +223,47 @@
             const method = document.getElementById("payment-method").value;
             const emailField = document.getElementById("email-field");
             const cardFields = document.getElementById("card-fields");
+            const emailField = document.getElementById("email-field");
 
-            if (method === "credit-card" || method === "debit-card") {
-                cardFields.style.display = "block";
-                emailField.style.display = "none";
+            const isCard = (method === "credit-card" || method === "debit-card");
+            const isEmail = (method === "apple-pay" || method === "google-pay" || method === "paypal");
+
+            cardFields.style.display = isCard ? "block" : "none";
+            emailField.style.display = isEmail ? "block" : "none";
+        }
+
+        function formatCardNumber(input) {
+            let cursorPos = input.selectionStart;
+
+            let digits = input.value.replace(/\D/g, '');
+
+            digits = digits.substring(0, 16);
+
+            let formatted = digits.replace(/(.{4})/g, '$1 ').trim();
+
+            let oldSpacesBefore = (input.value.substring(0, cursorPos).match(/ /g) || []).length;
+
+            input.value = formatted;
+
+            let newCursorPos = cursorPos - oldSpacesBefore + (formatted.substring(0, cursorPos).match(/ /g) || []).length;
+
+            input.setSelectionRange(newCursorPos, newCursorPos);
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, "");
+
+            if (value.length === 0) {
+                input.value = "";
+                return;
+            }
+
+            if (value.length >= 3) {
+                let month = value.slice(0, 2);
+                let year = value.slice(2, 4);
+                if (parseInt(month) > 12) month = "12";
+                if (parseInt(month) === 0) month = "01";
+                input.value = month + "/" + year;
             } else {
                 cardFields.style.display = "none";
                 emailField.style.display = "block";
