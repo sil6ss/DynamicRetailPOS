@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Confirmation</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .header {
+      background: linear-gradient(to right, #3b82f6, #2563eb);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      flex: 1;
+    }
+
+    .product-item {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      align-items: center;
+    }
+
+    .product-item img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .price {
+      margin-left: auto;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .summary p {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .total {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .success-box {
+      background: #d1fae5;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      color: #065f46;
+    }
+
+    .btn {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Order Confirmed</h1>
+    <p>Thank you for your purchase. Your order is being processed.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- LEFT SIDE -->
+      <div class="card">
+
+  <h2>Order Details</h2>
+  <p><strong>Order #:</strong> {{order.order_number}}</p>
+  <p><strong>Date:</strong> {{order.date}}</p>
+  <p><strong>Customer:</strong> {{order.customer_name}}</p>
+  <p><strong>Payment Method:</strong> {{order.payment_method}}</p>
+
+  <h2>Items Purchased</h2>
+          {% for item in order_items%}
+<div class="product-item">
+    <img src="{{item.image_url}}" alt="{{item.product_name}}">
+    <div>
+        <strong>{{item.product_name}}</strong>
+        <p>{{item.description}}</p>
+        <p>Qty: {{item.quantity}}</p>
+        </div>
+    <div class="price">${{"%.2f"|format(item.line_total)}}</div>
+    </div>
+      {%endfor%}
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+    <div class="card">
+
+      <h2>Payment Summary</h2>
+
+<div class="summary">
+    <p><span>Subtotal</span><span>${{"%.2f"|format(order.subtotal)}}</span></p>
+    <p><span>Discount</span><span>-${{"%.2f"|format(order.discount)}}</span></p>
+    <p><span>Tax</span><span>${{"%.2f"|format(order.tax)}}</span></p>
+    </div>
+
+        <div class="total">
+            Total Paid: ${{"%.2f"|format(order.total_paid)}}
+            </div>
+
+      <div class="success-box">
+        Your order has been successfully placed. A confirmation email has been sent.
+      </div>
+
+      <a href="#" class="btn btn-primary">Track Order</a>
+      <a href="{{url_for('products')}}" class="btn btn-secondary">Continue Shopping</a>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
