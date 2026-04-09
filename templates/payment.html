@@ -21,15 +21,37 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* payment container */
-        .payment-container {
+        /* accordion container */
+        .accordion-item {
             width: 90%;
             max-width: 600px;
-            margin: 30px auto;
             background: white;
-            padding: 25px;
+            margin: 15px auto;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            width: 100%;
+            background: #f4f1eb;
+            border: none;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .accordion-content.open {
+            padding: 20px;
         }
 
         label {
@@ -96,97 +118,116 @@
         <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
         <h2>Payment</h2>
     </div>
+    <div class="accordion">
+        <!-- Shipping Address -->
+        <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                Shipping Address
+            </button>
 
+            <div class="accordion-content open">
+                <label for="address">Street Address</label>
+                <input type="text" id="address" placeholder="123 Main St">
 
-    <div class="payment-container">
-        <form>
-            <label for="payment-method">Select Payment Method</label>
-            <select id="payment-method" onchange="toggleFields()">
-                <option value="credit-card">Credit Card</option>
-                <option value="debit-card">Debit Card</option>
-                <option value="apple-pay">Apple Pay</option>
-                <option value="google-pay">Google Pay</option>
-                <option value="paypal">PayPal</option>
-            </select>
+                <label for="city">City</label>
+                <input type="text" id="city" placeholder="City">
 
-            <!-- Email field for Apple Pay / Google Pay / PayPal -->
-            <div id="email-field" class="email-field">
-                <label for="email">Account Email</label>
-                <input type="email" id="email" placeholder="example@email.com">
+                <label for="state">State</label>
+                <input type="text" id="state" placeholder="State">
+
+                <label for="zip">ZIP Code</label>
+                <input type="text" id="zip" placeholder="ZIP Code" maxlength="5"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5);">
             </div>
+        </div>
 
-            <!-- Card Details Section -->
-            <div id="card-fields" class="card-fields">
+        <!-- Payment Details -->
+        <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                Payment Details
+            </button>
 
-                <label for="card-number">Card Number</label>
-                <input type="text" id="card-number" maxlength="19" placeholder="0000 0000 0000 0000"
-                    oninput="formatCardNumber(this)">
+            <div class="accordion-content">
+                <label for="payment-method">Select Payment Method</label>
+                <select id="payment-method" onchange="toggleFields()">
+                    <option value="credit-card">Credit Card</option>
+                    <option value="debit-card">Debit Card</option>
+                    <option value="apple-pay">Apple Pay</option>
+                    <option value="google-pay">Google Pay</option>
+                    <option value="paypal">PayPal</option>
+                </select>
 
-                <label for="card-holder">Card Holder Name</label>
-                <input type="text" id="card-holder"
-                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
+                <!-- Email field -->
+                <div id="email-field" class="email-field">
+                    <label for="email">Account Email</label>
+                    <input type="email" id="email" placeholder="example@example.com">
+                </div>
 
-                <div class="row">
-                    <div class="half">
-                        <label for="card-expiration">Expiration Date</label>
-                        <input type="text" id="card-expiration" placeholder="MM/YY" maxlength="5"
-                            oninput="formatExpiry(this)">
-                    </div>
+                <!-- Card fields -->
+                <div id="card-fields" class="card-fields">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
 
-                    <div class="half">
-                        <label for="card-cvv">CVV</label>
-                        <input type="text" id="card-cvv" maxlength="4" placeholder="0000"
-                            oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4)">
+                    <div class="row">
+                        <div class="half">
+                            <label for="exp">Expiration</label>
+                            <input type="text" id="exp" placeholder="MM/YY">
+                        </div>
+                        <div class="half">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="123">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="buttons">
-                <button type="submit" class="btn-confirm">Confirm Payment</button>
-                <button type="button" class="btn-back" onclick="history.back()">Go Back</button>
+                <div class="buttons">
+                    <button class="btn-back">Back</button>
+                    <button class="btn-confirm">Confirm Payment</button>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 
+    <!-- JAVASCRIPT -->
     <script>
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+
+            document.querySelectorAll('.accordion-content').forEach(section => {
+                if (section !== content) {
+                    section.style.maxHeight = null;
+                    section.classList.remove('open');
+                }
+            });
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.classList.remove('open');
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.classList.add('open');
+            }
+        }
+
         function toggleFields() {
             const method = document.getElementById("payment-method").value;
-            const cardFields = document.getElementById("card-fields");
             const emailField = document.getElementById("email-field");
+            const cardFields = document.getElementById("card-fields");
 
-            const isCard = (method === "credit-card" || method === "debit-card");
-            const isEmail = (method === "apple-pay" || method === "google-pay" || method === "paypal");
-
-            cardFields.style.display = isCard ? "block" : "none";
-            emailField.style.display = isEmail ? "block" : "none";
-        }
-
-        function formatCardNumber(input) {
-            let digits = input.value.replace(/\\D/g, "").slice(0, 16);
-            let formatted = digits.match(/.{1,4}/g)?.join(" ") || "";
-            input.value = formatted;
-        }
-
-        function formatExpiry(input) {
-            let value = input.value.replace(/\D/g, "");
-
-            if (value.length === 0) {
-                input.value = "";
-                return;
-            }
-
-            if (value.length >= 3) {
-                let month = value.slice(0, 2);
-                let year = value.slice(2, 4);
-                if (parseInt(month) > 12) month = "12";
-                if (parseInt(month) === 0) month = "01";
-                input.value = month + "/" + year;
+            if (method === "credit-card" || method === "debit-card") {
+                cardFields.style.display = "block";
+                emailField.style.display = "none";
             } else {
-                input.value = value;
+                cardFields.style.display = "none";
+                emailField.style.display = "block";
             }
         }
 
-        toggleFields();
+        window.addEventListener("load", () => {
+            const first = document.querySelector(".accordion-content");
+            first.style.maxHeight = first.scrollHeight + "px";
+            toggleFields();
+        });
     </script>
 </body>
 
