@@ -1,6 +1,8 @@
 # Created by: Silas Young, Katie Southard, Alex Puckett, Mesh Young
 # 03/2026 - 05/2026 Elevate Retail Capstone Class, Forsyth Tech Community College
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_login import LoginManager
+from auth import auth_bp, User
 import mysql.connector
 from cart import cart_bp
 import atexit
@@ -10,16 +12,20 @@ from dotenv import load_dotenv
 home = Flask(__name__)
 home.secret_key = "elevate-retail-secret-key"
 home.register_blueprint(cart_bp)
+home.register_blueprint(auth_bp)
+
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+login_manager.init_app(home)
+
 load_dotenv()
-host = os.getenv("DB_HOST")
-port = os.getenv("DB_PORT", "3306")
-user = os.getenv("DB_USER")
-passw = os.getenv("DB_PASS")
-db = os.getenv("DB_NAME")
+host = os.getenv("HOST")
+user = os.getenv("USER")
+passw = os.getenv("PASS")
+db = os.getenv("DATA")
 
 conn = mysql.connector.connect(
     host=host,
-    port=int(port),
     user=user,
     password=passw,
     database=db
@@ -100,6 +106,17 @@ def add_to_cart():
     session["cart"] = cart
     session.modified = True
     return redirect(url_for("home_page"))
+
+@login_manager.user_loader
+def load_user(user_id):
+    cursor.execute("""
+        SELECT Customer_ID, First_Name, Last_Name, Email
+        FROM Customer WHERE Customer_ID = %s
+    """, (user_id,))
+    row = cursor.fetchone()
+    if row:
+        return User(row[0], row[1], row[2], row[3])
+    return None
 
 # Close connection to database to prevent errors
 def cleanup():

@@ -5,256 +5,270 @@
     <title>Elevate Retail</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=shopping_cart" />
     <style>
-        /*background and font*/
-    body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #13293D;
-    }
-
-    /*header*/
-    header {
-    background: #13293D;
-    color: black;
-    padding: 20px;
-    text-align: center;
-    }
-
-    .logo {
-    max-width: 240px;
-    height: auto;
-    display: block;
-    margin: 0 auto 10px;
-    }
-    .items-container {
-    width: 90%;
-    max-width: 1100px;
-    margin: 30px auto;
-    display: grid;
-    gap: 25px;
-    place-items: center;
-    }
-
-    /*box around items*/
-    .items {
-    background: #A18276;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #d6d6d6;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    text-align: center;
-    }
-
-    /*cart item cards*/
-    .item-card {
-    display: flex;
-    gap: 15px;
-    flex-direction: column;
-    align-items: center;
-    text-align:center;
-    padding: 15px;
-    margin-bottom: 15px;
-    background: #EBEBD3;
-    border: 1px solid #dddddd;
-    border-radius: 10px;
-    }
-
-    /*item images*/
-    .item-card img {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 8px;
-    }
-
-    /*product info*/
-    .item-details {
-    flex: 1;
-    }
-    .item-details h3 {
-    margin: 0 0 8px;
-    font-size: 18px;
-    }
-    .item-details p {
-    margin: 0 0 10px;
-    color: #555;
-    font-size: 14px;
-    }
-
-    /*price text*/
-    .price {
-    font-weight: bold;
-    color: #187633;
-    margin-bottom: 10px;
-    }
-    .add-cart{
-    color: #EBEBD3;
-    background: #22466a;
-    border: none;
-    border-radius: 5px 5px 5px 5px;
-    outline: none;
-    cursor: pointer;
-    }
-    .add-cart:hover{
-        background: #13293D;
-    }
-    .cart-wrapper {
-        display: flex;
-    }
-    .cart-main {
-        flex-grow: 1;
-        padding: 20px;
-    }
-    .cart-side-toggle {
-    position: fixed;
-    top: 20px;
-    right: 0;
-    transition: right 0.3s ease;
-    width: 40px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-    background: #EBEBD3;
-    border: none;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-    cursor: pointer;
-    z-index: 100;
-}
-    .cart-side-toggle:hover {
-        background: #203007
-    }
-    .cart-side-toggle.panel-open {
-    right: 240px; /* match your side panel width */
-    }
-    .side-panel {
-    justify-items: center;
-    display: block;
-    position: fixed;
-    top: 0;
-    right: -240px;
-    transition: right 0.3s ease;
-    width: 200px;
-    height: 100vh;
-    padding: 20px;
-    color: #000000;
-    background: #A18276;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-    overflow-y: auto;
-    z-index: 99;
-}
-    .side-panel-open .side-panel{
-        right: 0;
-    }
-    .proceed-cart {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%); /* true centering trick */
-    padding: 8px 16px;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-    color: #FFFFFF;
-    background: #13293D;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-    .proceed-cart:hover{
-        background: #22466a;
-    }
-    .cart-side-tile{
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    text-align:center;
-    padding: 5px;
-    margin-bottom: 5px;
-    background: #EBEBD3;
-    border: 1px solid #dddddd;
-    border-radius: 10px;
-    }
-    .cart-side-tile img {
-    width: 30%;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 8px;
-    }
-    .logo{
-        background: #433E3F;
-        border-radius: 50px 50px 50px 50px;
-
-    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #2E3440;
+        }
+        header {
+            background: #2E3440;
+            color: #ECEFF4;
+            padding: 20px;
+            text-align: center;
+        }
+        .logo {
+            max-width: 240px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            background: #3B4252;
+            border-radius: 50px;
+        }
+        .items-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+            display: grid;
+            gap: 25px;
+            place-items: center;
+        }
+        .items {
+            background: #3B4252;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #4C566A;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+        .item-card {
+            display: flex;
+            gap: 15px;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #434C5E;
+            border: 1px solid #4C566A;
+            border-radius: 10px;
+        }
+        .item-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .item-details { flex: 1; }
+        .item-details h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            color: #ECEFF4;
+        }
+        .item-details p {
+            margin: 0 0 10px;
+            color: #D8DEE9;
+            font-size: 14px;
+        }
+        .price {
+            font-weight: bold;
+            color: #A3BE8C;
+            margin-bottom: 10px;
+        }
+        .add-cart {
+            color: #ECEFF4;
+            background: #5E81AC;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+            padding: 6px 14px;
+        }
+        .add-cart:hover { background: #81A1C1; }
+        .cart-wrapper { display: flex; }
+        .cart-main {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .cart-side-toggle {
+            position: fixed;
+            top: 20px;
+            right: 0;
+            transition: right 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            background: #4C566A;
+            color: #ECEFF4;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            cursor: pointer;
+            z-index: 100;
+        }
+        .cart-side-toggle:hover { background: #81A1C1; }
+        .cart-side-toggle.panel-open { right: 240px; }
+        .side-panel {
+            justify-items: center;
+            display: block;
+            position: fixed;
+            top: 0;
+            right: -240px;
+            transition: right 0.3s ease;
+            width: 200px;
+            height: 100vh;
+            padding: 20px;
+            color: #ECEFF4;
+            background: #3B4252;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.4);
+            overflow-y: auto;
+            z-index: 99;
+        }
+        .side-panel-open .side-panel { right: 0; }
+        .proceed-cart {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 16px;
+            color: #ECEFF4;
+            background: #5E81AC;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .proceed-cart:hover { background: #81A1C1; }
+        .cart-side-tile {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            text-align: center;
+            padding: 5px;
+            margin-bottom: 5px;
+            background: #434C5E;
+            border: 1px solid #4C566A;
+            border-radius: 10px;
+            color: #ECEFF4;
+        }
+        .cart-side-tile img {
+            width: 30%;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .empty-cart { color: #D8DEE9; }
+        input[type="text"] {
+            background: #434C5E;
+            border: 1px solid #4C566A;
+            border-radius: 5px;
+            color: #ECEFF4;
+            padding: 6px 10px;
+        }
+        input[type="text"]::placeholder { color: #88C0D0; }
+        button[type="submit"] {
+            background: #5E81AC;
+            color: #ECEFF4;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 14px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover { background: #81A1C1; }
+        p1 { color: #D8DEE9; font-size: 13px; }
+        .signin-btn {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            background: #4C566A;
+            color: #ECEFF4;
+            text-decoration: none;
+            padding: 0 14px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 0 5px 5px 0;
+            font-size: 14px;
+            z-index: 100;
+            transition: background 0.2s ease;
+        }
+        .signin-btn:hover { background: #81A1C1; }
     </style>
 </head>
 <body>
 <header>
     <img class="logo" src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo">
 </header>
+
+{% if current_user.is_authenticated %}
+    <a href="{{ url_for('auth.logout') }}" class="signin-btn">Sign Out</a>
+{% else %}
+    <a href="{{ url_for('auth.login') }}" class="signin-btn">Sign In</a>
+{% endif %}
+
 <button class="cart-side-toggle" type="button">
-        <span class="material-symbols-outlined cart-icon">
-        shopping_cart
-        </span>
-    </button>
+    <span class="material-symbols-outlined cart-icon">shopping_cart</span>
+</button>
+
 <div class="cart-wrapper">
     <div class="cart-main">
-<div class="items-container">
-    <h2 style="color:#FFFFFF">Available Products</h2>
-    <form action="/" method="GET">
-    <input type="text" name="q" placeholder="Search items..." value="{{ request.args.get('q', '') }}">
-    <button type="submit">Search</button>
-</form>
-    <section class="items">
-        {% if products %}
-            {% for item in products %}
-            <div class="item-card">
+        <div class="items-container">
+            <h2 style="color:#ECEFF4">Available Products</h2>
+            <form action="/" method="GET">
+                <input type="text" name="q" placeholder="Search items..." value="{{ request.args.get('q', '') }}">
+                <button type="submit">Search</button>
+            </form>
+            <section class="items">
+                {% if products %}
+                    {% for item in products %}
+                    <div class="item-card">
+                        <img src="{{ item.image }}" alt="{{ item.name }}">
+                        <div class="item-details">
+                            <h3>{{ item.name }}</h3>
+                            <p>{{ item.description }}</p>
+                            <p1>{{ item.quantity }} in stock</p1>
+                            <div class="price">${{ "%.2f"|format(item.price | float) }} each</div>
+                            <form action="{{ url_for('add_to_cart') }}" method="POST">
+                                <input type="hidden" name="name" value="{{ item.name }}">
+                                <input type="hidden" name="description" value="{{ item.description }}">
+                                <input type="hidden" name="price" value="{{ item.price }}">
+                                <input type="hidden" name="image" value="{{ item.image }}">
+                                <button class="add-cart" type="submit">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-cart">Nothing is Available.</p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+
+    <div class="side-panel">
+        {% if cart %}
+            {% for item in cart %}
+            <div class="cart-side-tile">
                 <img src="{{ item.image }}" alt="{{ item.name }}">
-                <div class="item-details">
-                    <h3>{{ item.name }}</h3>
-                    <p>{{item.description}}</p>
-                    <p>{{item.quantity}} in stock</p>
-                    <div class="price">${{ "%.2f"|format(item.price | float) }} each</div>
-                    <form action="{{ url_for('add_to_cart') }}" method="POST">
-                        <input type="hidden" name="name" value="{{ item.name }}">
-                        <input type="hidden" name="description" value="{{ item.description }}">
-                        <input type="hidden" name="price" value="{{ item.price }}">
-                        <input type="hidden" name="image" value="{{ item.image }}">
-                        <button class="add-cart" type="submit">Add to Cart</button>
-                    </form>
-                </div>
+                <p>{{ item.quantity }}x {{ item.name }}</p>
             </div>
             {% endfor %}
         {% else %}
-        <!--cart empty message-->
-            <p class="empty-cart">Nothing is Available.</p>
+            <p class="empty-cart">Cart is empty.</p>
         {% endif %}
-    </section>
-</div>
-</div>
-    <div class="side-panel">
-            {% if cart %}
-                {% for item in cart %}
-                <div class="cart-side-tile">
-                   <img src="{{ item.image }}" alt="{{ item.name }}">
-                    <p>{{item.quantity}}x {{ item.name }}</p>
-                </div>
-                {% endfor %}
-        {% else %}
-            <p class="empty-cart">Nothing is Available.</p>
-        {% endif %}
-        <form action="{{ url_for('cart.cart') }}">
-        <button class="proceed-cart" type="submit">Proceed to Cart</button>
+        <form action="/cart">
+            <button class="proceed-cart" type="submit">Proceed to Cart</button>
         </form>
     </div>
 </div>
+
 <script>
     document.querySelector(".cart-side-toggle").addEventListener("click", () => {
-    document.querySelector(".cart-wrapper").classList.toggle("side-panel-open");
-    document.querySelector(".cart-side-toggle").classList.toggle("panel-open");
-});
+        document.querySelector(".cart-wrapper").classList.toggle("side-panel-open");
+        document.querySelector(".cart-side-toggle").classList.toggle("panel-open");
+    });
 </script>
 </body>
 </html>

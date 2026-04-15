@@ -1,264 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--page setup-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Cart</title>
-<style>
-    /*background and font*/
-    body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #e8d8c3;
-    }
-
-    /*header*/
-    header {
-    background: #f7f7f7;
-    color: black;
-    padding: 20px;
-    text-align: center;
-    }
-
-    .logo {
-    max-width: 240px;
-    height: auto;
-    display: block;
-    margin: 0 auto 10px;
-    }
-
-    /*main cart layout*/
-    .cart-container {
-        width: 90%;
-        max-width: 1100px;
-        margin: 30px auto;
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 25px;
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #2E3440;
         }
-
-        /*box around cart items*/
+        header {
+            background: #2E3440;
+            color: #ECEFF4;
+            padding: 20px;
+            text-align: center;
+        }
+        header h2 {
+            color: #ECEFF4;
+            margin: 8px 0 0;
+        }
+        .logo {
+            max-width: 240px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            background: #3B4252;
+            border-radius: 50px;
+        }
+        .cart-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
         .cart-items {
-        background: #f9f9f9;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid #d6d6d6;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: #3B4252;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #4C566A;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
-
-        /*box around order summary*/
+        .cart-items h2 {
+            color: #ECEFF4;
+            margin-top: 0;
+        }
         .cart-summary {
-        background: #f9f9f9;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid #d6d6d6;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: #3B4252;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #4C566A;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
-
-        /*cart item cards*/
+        .cart-summary h2 {
+            color: #ECEFF4;
+            margin-top: 0;
+        }
         .cart-item {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        padding: 15px;
-        margin-bottom: 15px;
-        background: white;
-        border: 1px solid #dddddd;
-        border-radius: 10px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #434C5E;
+            border: 1px solid #4C566A;
+            border-radius: 10px;
         }
-
-        /*item images*/
         .cart-item img {
-        width: 120px;
-        height: 90px;
-        object-fit: cover;
-        border-radius: 8px;
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
         }
-
-        /*product info*/
-        .item-details {
-        flex: 1;
-        }
+        .item-details { flex: 1; }
         .item-details h3 {
-        margin: 0 0 8px;
-        font-size: 18px;
+            margin: 0 0 8px;
+            font-size: 18px;
+            color: #ECEFF4;
         }
         .item-details p {
-        margin: 0 0 10px;
-        color: #555;
-        font-size: 14px;
+            margin: 0 0 10px;
+            color: #D8DEE9;
+            font-size: 14px;
         }
-
-        /*price text*/
         .price {
-        font-weight: bold;
-        color: #187633;
-        margin-bottom: 10px;
+            font-weight: bold;
+            color: #A3BE8C;
+            margin-bottom: 10px;
         }
-
-        /*qty/update/remove area*/
         .item-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .item-actions label {
+            color: #D8DEE9;
+            font-size: 14px;
         }
         .item-actions input {
-        width: 60px;
-        padding: 6px;
-        text-align: center;
+            width: 60px;
+            padding: 6px;
+            text-align: center;
+            background: #2E3440;
+            border: 1px solid #4C566A;
+            border-radius: 5px;
+            color: #ECEFF4;
         }
-
-    /*button style*/
+        .cart-item > div > strong {
+            color: #ECEFF4;
+        }
         .btn {
-        padding: 8px 14px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
         }
         .btn-update {
-        background: #007bff;
-        color: white;
+            background: #5E81AC;
+            color: #ECEFF4;
         }
+        .btn-update:hover { background: #81A1C1; }
         .btn-remove {
-        background: #dc3545;
-        color: white;
+            background: #BF616A;
+            color: #ECEFF4;
         }
-
-        /*summary rows*/
+        .btn-remove:hover { background: #D08770; }
         .summary-row {
-        display: flex;
-        justify-content: space-between;
-        margin: 12px 0;
-        font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            font-size: 16px;
+            color: #D8DEE9;
         }
-
-         /*total rows*/
         .summary-total {
-        font-size: 20px;
-        font-weight: bold;
-        border-top: 1px solid #cccccc;
-        margin-top: 15px;
-        padding-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            border-top: 1px solid #4C566A;
+            margin-top: 15px;
+            padding-top: 15px;
+            color: #ECEFF4;
         }
-
+        .promo-input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            box-sizing: border-box;
+            background: #2E3440;
+            border: 1px solid #4C566A;
+            border-radius: 5px;
+            color: #ECEFF4;
+        }
+        .promo-input::placeholder { color: #88C0D0; }
+        .promo-label {
+            color: #D8DEE9;
+        }
         .checkout-btn,
         .back-btn {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 12px;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        text-align: center;
-        text-decoration: none;
-        color: white;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #ECEFF4;
         }
-
         .checkout-btn {
-        margin-top: 20px;
-        background: #28a745;
+            margin-top: 20px;
+            background: #A3BE8C;
+            color: #2E3440;
+            font-weight: bold;
         }
-
+        .checkout-btn:hover { background: #88C0D0; }
         .back-btn {
-        margin-top: 10px;
-        background: #6c757d;
+            margin-top: 10px;
+            background: #4C566A;
         }
-
-        /*empty cart*/
+        .back-btn:hover { background: #5E81AC; }
         .empty-cart {
-        text-align: center;
-        color: #555;
-        padding: 30px 0;
+            text-align: center;
+            color: #D8DEE9;
+            padding: 30px 0;
         }
-
-        /*mobile responsiveness*/
         @media (max-width: 850px) {
-        .cart-container {
-        grid-template-columns: 1fr;
+            .cart-container { grid-template-columns: 1fr; }
+            .cart-item img {
+                width: 100%;
+                height: auto;
+                max-width: 250px;
+            }
         }
-        .cart-item img {
-        width: 100%;
-        height: auto;
-        max-width: 250px;
-        }
-        }
-        </style>
-
+    </style>
 </head>
 <body>
 
-
-<!--page header w/ logo-->
 <header>
-    <img src="{{url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
+    <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
     <h2>My Cart</h2>
 </header>
 
-<!--main cart layout-->
 <div class="cart-container">
 
-    <!--left side cart items-->
     <section class="cart-items">
         <h2>My Cart</h2>
-
-        <!--check for cart items-->
         {% if cart %}
-        <!--loop-->
             {% for item in cart %}
                 <div class="cart-item">
-                    <img src="{{item.image}}" alt="{{item.name}}">
-
+                    <img src="{{ item.image }}" alt="{{ item.name }}">
                     <div class="item-details">
                         <h3>{{ item.name }}</h3>
                         <p>{{ item.description }}</p>
                         <div class="price">${{ "%.2f"|format(item.price) }} each</div>
-
                         <div class="item-actions">
                             <form action="{{ url_for('cart.update_cart') }}" method="POST">
-                                <input type="hidden" name="product_name" value="{{item.name}}">
+                                <input type="hidden" name="product_name" value="{{ item.name }}">
                                 <label for="qty{{ loop.index }}">Qty:</label>
-                                <input type="number" id="qty{{ loop.index }}" name="quantity" value="{{item.quantity}}" min="1">
+                                <input type="number" id="qty{{ loop.index }}" name="quantity" value="{{ item.quantity }}" min="1">
                                 <button type="submit" class="btn btn-update">Update</button>
                             </form>
-
                             <form action="{{ url_for('cart.remove_from_cart') }}" method="POST">
-                                <input type="hidden" name="product_name" value="{{item.name}}">
+                                <input type="hidden" name="product_name" value="{{ item.name }}">
                                 <button type="submit" class="btn btn-remove">Remove</button>
                             </form>
                         </div>
                     </div>
-
-                    <!--total price for spec. item-->
                     <div>
                         <strong>${{ "%.2f"|format(item.price * item.quantity) }}</strong>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-        <!--cart empty message-->
             <p class="empty-cart">Your cart is empty.</p>
         {% endif %}
     </section>
 
-    <!--right side order summary-->
     <aside class="cart-summary">
         <h2>Order Summary</h2>
-
-        <!--promo code form-->
         <form action="{{ url_for('cart.apply_promo') }}" method="POST" style="margin-top: 15px;">
-            <label for="promo_code"><strong>Promo Code</strong></label>
+            <label class="promo-label" for="promo_code"><strong>Promo Code</strong></label>
             <input type="text"
-           id="promo_code"
-           name="promo_code"
-           value="{{ promo_code }}"
-           placeholder="Enter code"
-           style="width: 100%; padding: 10px; margin-top: 8px; box-sizing: border-box;">
+                   id="promo_code"
+                   name="promo_code"
+                   value="{{ promo_code }}"
+                   placeholder="Enter code"
+                   class="promo-input">
             <button type="submit" class="btn btn-update" style="margin-top: 10px;">Apply Code</button>
         </form>
 
@@ -266,40 +259,27 @@
             <span>Subtotal</span>
             <span>${{ "%.2f"|format(subtotal) }}</span>
         </div>
-
         <div class="summary-row">
             <span>Discount</span>
             <span>-${{ "%.2f"|format(discount) }}</span>
         </div>
-
         <div class="summary-row">
             <span>Sales Tax</span>
             <span>${{ "%.2f"|format(sales_tax) }}</span>
         </div>
-
         <div class="summary-row">
             <span>Shipping</span>
             <span>${{ "%.2f"|format(shipping) }}</span>
         </div>
-
         <div class="summary-row summary-total">
             <span>Total</span>
             <span>${{ "%.2f"|format(total) }}</span>
         </div>
 
-        <!--checkout and continue shopping btns-->
-        <a href="{{url_for('cart.payment')}}"
-        class="checkout-btn">
-        Proceed to Checkout
-        </a>
-
-        <a href="{{ url_for('home_page') }}"
-           class="back-btn">
-            Back to Products
-        </a>
-
+        <a href="{{ url_for('cart.payment') }}" class="checkout-btn">Proceed to Checkout</a>
+        <a href="{{ url_for('home_page') }}" class="back-btn">Back to Products</a>
     </aside>
-</div>
 
+</div>
 </body>
 </html>

@@ -4,40 +4,46 @@
     <meta charset="UTF-8" />
     <title>Payment</title>
     <style>
-        /* background and font */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: #e8d8c3;
+            background: #2E3440;
         }
-
-        /* header bar */
         .header {
-            background: white;
+            background: #2E3440;
             padding: 20px 0;
             text-align: center;
             margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
-        /* payment container */
+        .header h2 {
+            color: #ECEFF4;
+            margin: 8px 0 0;
+        }
+        .logo {
+            max-width: 240px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            background: #3B4252;
+            border-radius: 50px;
+        }
         .payment-container {
             width: 90%;
             max-width: 600px;
             margin: 30px auto;
-            background: white;
+            background: #3B4252;
             padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            border: 1px solid #4C566A;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
-
         label {
             font-weight: bold;
             margin-bottom: 8px;
             display: block;
+            color: #D8DEE9;
         }
-
         select,
         input {
             width: 100%;
@@ -45,232 +51,214 @@
             font-size: 16px;
             margin-bottom: 20px;
             box-sizing: border-box;
+            background: #434C5E;
+            border: 1px solid #4C566A;
+            border-radius: 6px;
+            color: #ECEFF4;
         }
-
+        select option {
+            background: #434C5E;
+            color: #ECEFF4;
+        }
+        input::placeholder {
+            color: #88C0D0;
+        }
         .card-fields,
         .email-field {
             display: none;
         }
-
         .row {
             display: flex;
             gap: 20px;
         }
-
-        .half {
-            flex: 1;
-        }
-
+        .half { flex: 1; }
         .buttons {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
         }
-
-        /* button styles */
         .btn-confirm {
-            background: #28a745;
-            color: white;
+            background: #A3BE8C;
+            color: #2E3440;
             border: none;
             padding: 12px 20px;
             font-size: 16px;
-            border-radius: 4px;
+            font-weight: bold;
+            border-radius: 6px;
             cursor: pointer;
         }
-
+        .btn-confirm:hover { background: #88C0D0; color: #2E3440; }
         .btn-back {
-            background: #dc3545;
-            color: white;
+            background: #BF616A;
+            color: #ECEFF4;
             border: none;
             padding: 12px 20px;
             font-size: 16px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
         }
-
-        /*added order summary*/
+        .btn-back:hover { background: #D08770; }
         .summary-box {
             margin-top: 25px;
             padding: 20px;
-            background: #f9f9f9;
-            border: 1px solid #ddd;
+            background: #434C5E;
+            border: 1px solid #4C566A;
             border-radius: 8px;
         }
-
         .summary-box h3 {
             margin-top: 0;
             margin-bottom: 15px;
+            color: #ECEFF4;
         }
-
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin: 10px 0;
+            color: #D8DEE9;
         }
-
         .summary-total {
             font-weight: bold;
             font-size: 18px;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #4C566A;
             padding-top: 12px;
             margin-top: 12px;
+            color: #ECEFF4;
         }
     </style>
 </head>
-
 <body>
-    <!--page header w/ logo-->
-    <div class="header">
-        <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
-        <h2>Payment</h2>
-    </div>
 
+<div class="header">
+    <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
+    <h2>Payment</h2>
+</div>
 
-    <div class="payment-container">
-        <form action="{{ url_for('cart.order_confirmation') }}" method="get"> <!--sends payment form to order confirmation page-->
-            <label for="payment-method">Select Payment Method</label>
-            <select id="payment-method" name="payment_method" onchange="toggleFields()"><!--payment method dropdown; name for flask value-->
-                <option value="credit-card">Credit Card</option>
-                <option value="debit-card">Debit Card</option>
-                <option value="apple-pay">Apple Pay</option>
-                <option value="google-pay">Google Pay</option>
-                <option value="paypal">PayPal</option>
-            </select>
+<div class="payment-container">
+    <form action="{{ url_for('cart.order_confirmation') }}" method="get">
+        <label for="payment-method">Select Payment Method</label>
+        <select id="payment-method" name="payment_method" onchange="toggleFields()">
+            <option value="credit-card">Credit Card</option>
+            <option value="debit-card">Debit Card</option>
+            <option value="apple-pay">Apple Pay</option>
+            <option value="google-pay">Google Pay</option>
+            <option value="paypal">PayPal</option>
+        </select>
 
-            <!-- Email field for Apple Pay / Google Pay / PayPal -->
-            <div id="email-field" class="email-field">
-                <label for="email">Account Email</label>
-                <input type="email" id="email" name="email" placeholder="example@email.com"><!--added name for flask-->
-            </div>
+        <div id="email-field" class="email-field">
+            <label for="email">Account Email</label>
+            <input type="email" id="email" name="email" placeholder="example@email.com">
+        </div>
 
-            <!-- Card Details Section -->
-            <div id="card-fields" class="card-fields">
+        <div id="card-fields" class="card-fields">
+            <label for="card-number">Card Number</label>
+            <input type="tel" id="card-number" name="card_number" maxlength="19"
+                   placeholder="0000 0000 0000 0000" inputmode="numeric"
+                   pattern="[\d ]{13,19}" autocomplete="cc-number"
+                   oninput="formatCardNumber(this)">
 
-                <label for="card-number">Card Number</label>
-                <input type="tel" id="card-number" name="card_number" maxlength="19" placeholder="0000 0000 0000 0000"
-                       inputmode="numeric"
-                       pattern="[\d ]{13,19}"
-                       autocomplete="cc-number"
-                       oninput="formatCardNumber(this)">
+            <label for="card-holder">Card Holder Name</label>
+            <input type="text" id="card-holder" name="card_holder"
+                   oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
 
-                <label for="card-holder">Card Holder Name</label>
-                <input type="text" id="card-holder" name="card_holder"
-                       oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"><!--added name-->
-
-                <div class="row">
-                    <div class="half">
-                        <label for="card-expiration">Expiration Date</label>
-                        <input type="text" id="card-expiration" name="card_expiration"
-                               placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"><!--added name-->
-                    </div>
-
-                    <div class="half">
-                        <label for="card-cvv">CVV</label>
-                        <input type="text" id="card-cvv" name="card_cvv" maxlength="4" placeholder="0000"
-                               oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4)"><!--added name-->
-                    </div>
+            <div class="row">
+                <div class="half">
+                    <label for="card-expiration">Expiration Date</label>
+                    <input type="text" id="card-expiration" name="card_expiration"
+                           placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
                 </div>
-            </div>
-
-            <div class="buttons">
-                <button type="submit" class="btn-confirm">Confirm Payment</button>
-                <a href="{{ url_for('cart.cart') }}" class="btn-back" style="text-decoration:none; display:inline-block;">Back to Cart</a><!--fix to route back to cart-->
-            </div>
-        </form>
-            <div class="summary-box">
-                <h3>Order Summary</h3>
-
-                <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span>${{ "%.2f"|format(subtotal) }}</span>
-                </div>
-
-                <div class="summary-row">
-                    <span>Discount</span>
-                    <span>-${{ "%.2f"|format(discount) }}</span>
-                </div>
-
-                <div class="summary-row">
-                    <span>Sales Tax</span>
-                    <span>${{ "%.2f"|format(sales_tax) }}</span>
-                </div>
-
-                <div class="summary-row">
-                    <span>Shipping</span>
-                    <span>${{ "%.2f"|format(shipping) }}</span>
-                </div>
-
-                <div class="summary-row summary-total">
-                    <span>Total</span>
-                    <span>${{ "%.2f"|format(total) }}</span>
+                <div class="half">
+                    <label for="card-cvv">CVV</label>
+                    <input type="text" id="card-cvv" name="card_cvv" maxlength="4"
+                           placeholder="0000"
+                           oninput="this.value = this.value.replace(/\D/g, '').slice(0, 4)">
                 </div>
             </div>
         </div>
 
-    <script>
-        function toggleFields() {
-            const method = document.getElementById("payment-method").value;
-            const cardFields = document.getElementById("card-fields");
-            const emailField = document.getElementById("email-field");
+        <div class="buttons">
+            <button type="submit" class="btn-confirm">Confirm Payment</button>
+            <a href="{{ url_for('cart.cart') }}" class="btn-back">Back to Cart</a>
+        </div>
+    </form>
 
-            const cardNumber = document.getElementById("card-number");
-            const cardHolder = document.getElementById("card-holder");
-            const cardExpiration = document.getElementById("card-expiration");
-            const cardCvv = document.getElementById("card-cvv");
-            const email = document.getElementById("email");
+    <div class="summary-box">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <span>${{ "%.2f"|format(subtotal) }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Discount</span>
+            <span>-${{ "%.2f"|format(discount) }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Sales Tax</span>
+            <span>${{ "%.2f"|format(sales_tax) }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Shipping</span>
+            <span>${{ "%.2f"|format(shipping) }}</span>
+        </div>
+        <div class="summary-row summary-total">
+            <span>Total</span>
+            <span>${{ "%.2f"|format(total) }}</span>
+        </div>
+    </div>
+</div>
 
-            const isCard = (method === "credit-card" || method === "debit-card");
-            const isEmail = (method === "apple-pay" || method === "google-pay" || method === "paypal");
+<script>
+    function toggleFields() {
+        const method = document.getElementById("payment-method").value;
+        const cardFields = document.getElementById("card-fields");
+        const emailField = document.getElementById("email-field");
 
-            cardFields.style.display = isCard ? "block" : "none";
-            emailField.style.display = isEmail ? "block" : "none";
+        const cardNumber = document.getElementById("card-number");
+        const cardHolder = document.getElementById("card-holder");
+        const cardExpiration = document.getElementById("card-expiration");
+        const cardCvv = document.getElementById("card-cvv");
+        const email = document.getElementById("email");
 
-            cardNumber.required = isCard;
-            cardHolder.required = isCard;
-            cardExpiration.required = isCard;
-            cardCvv.required = isCard;
-            email.required = isEmail;
+        const isCard = (method === "credit-card" || method === "debit-card");
+        const isEmail = (method === "apple-pay" || method === "google-pay" || method === "paypal");
+
+        cardFields.style.display = isCard ? "block" : "none";
+        emailField.style.display = isEmail ? "block" : "none";
+
+        cardNumber.required = isCard;
+        cardHolder.required = isCard;
+        cardExpiration.required = isCard;
+        cardCvv.required = isCard;
+        email.required = isEmail;
+    }
+
+    function formatCardNumber(input) {
+        let cursorPos = input.selectionStart;
+        let digits = input.value.replace(/\D/g, '');
+        digits = digits.substring(0, 16);
+        let formatted = digits.replace(/(.{4})/g, '$1 ').trim();
+        let oldSpacesBefore = (input.value.substring(0, cursorPos).match(/ /g) || []).length;
+        input.value = formatted;
+        let newCursorPos = cursorPos - oldSpacesBefore + (formatted.substring(0, cursorPos).match(/ /g) || []).length;
+        input.setSelectionRange(newCursorPos, newCursorPos);
+    }
+
+    function formatExpiry(input) {
+        let value = input.value.replace(/\D/g, "");
+        if (value.length === 0) { input.value = ""; return; }
+        if (value.length >= 3) {
+            let month = value.slice(0, 2);
+            let year = value.slice(2, 4);
+            if (parseInt(month) > 12) month = "12";
+            if (parseInt(month) === 0) month = "01";
+            input.value = month + "/" + year;
+        } else {
+            input.value = value;
         }
+    }
 
-        function formatCardNumber(input) {
-            let cursorPos = input.selectionStart;
-
-            let digits = input.value.replace(/\D/g, '');
-
-            digits = digits.substring(0, 16);
-
-            let formatted = digits.replace(/(.{4})/g, '$1 ').trim();
-
-            let oldSpacesBefore = (input.value.substring(0, cursorPos).match(/ /g) || []).length;
-
-            input.value = formatted;
-
-            let newCursorPos = cursorPos - oldSpacesBefore + (formatted.substring(0, cursorPos).match(/ /g) || []).length;
-
-            input.setSelectionRange(newCursorPos, newCursorPos);
-        }
-
-        function formatExpiry(input) {
-            let value = input.value.replace(/\D/g, "");
-
-            if (value.length === 0) {
-                input.value = "";
-                return;
-            }
-
-            if (value.length >= 3) {
-                let month = value.slice(0, 2);
-                let year = value.slice(2, 4);
-                if (parseInt(month) > 12) month = "12";
-                if (parseInt(month) === 0) month = "01";
-                input.value = month + "/" + year;
-            } else {
-                input.value = value;
-            }
-        }
-
-        toggleFields();
-    </script>
+    toggleFields();
+</script>
 </body>
-
 </html>
