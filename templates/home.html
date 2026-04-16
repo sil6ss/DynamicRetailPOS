@@ -231,6 +231,7 @@
                             <p1>{{ item.quantity }} in stock</p1>
                             <div class="price">${{ "%.2f"|format(item.price | float) }} each</div>
                             <form action="{{ url_for('add_to_cart') }}" method="POST">
+                                <input type="hidden" name="inventory_id" value="{{ item.inventory_id }}">
                                 <input type="hidden" name="name" value="{{ item.name }}">
                                 <input type="hidden" name="description" value="{{ item.description }}">
                                 <input type="hidden" name="price" value="{{ item.price }}">

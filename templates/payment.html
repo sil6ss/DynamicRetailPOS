@@ -136,7 +136,7 @@
 </div>
 
 <div class="payment-container">
-    <form action="{{ url_for('cart.order_confirmation') }}" method="get">
+    <form action="{{ url_for('cart.order_confirmation') }}" method="POST">
         <label for="payment-method">Select Payment Method</label>
         <select id="payment-method" name="payment_method" onchange="toggleFields()">
             <option value="credit-card">Credit Card</option>
@@ -190,8 +190,12 @@
             <span>${{ "%.2f"|format(subtotal) }}</span>
         </div>
         <div class="summary-row">
-            <span>Discount</span>
-            <span>-${{ "%.2f"|format(discount) }}</span>
+            <span>Membership Discount</span>
+            <span>-${{ "%.2f"|format(membership_discount) }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Promo Discount</span>
+            <span>-${{ "%.2f"|format(promo_discount) }}</span>
         </div>
         <div class="summary-row">
             <span>Sales Tax</span>

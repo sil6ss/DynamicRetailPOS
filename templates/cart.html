@@ -260,8 +260,12 @@
             <span>${{ "%.2f"|format(subtotal) }}</span>
         </div>
         <div class="summary-row">
-            <span>Discount</span>
-            <span>-${{ "%.2f"|format(discount) }}</span>
+            <span>Membership Discount</span>
+            <span>-${{ "%.2f"|format(membership_discount) }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Promo Discount</span>
+            <span>-${{ "%.2f"|format(promo_discount) }}</span>
         </div>
         <div class="summary-row">
             <span>Sales Tax</span>
