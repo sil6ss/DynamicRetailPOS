@@ -21,10 +21,10 @@ login_manager.login_view = 'auth.login'
 login_manager.init_app(home)
 
 load_dotenv()
-host = os.getenv("HOST")
-user = os.getenv("USER")
-passw = os.getenv("PASS")
-db = os.getenv("DATA")
+host = os.getenv("DB_HOST")
+user = os.getenv("DB_USER")
+passw = os.getenv("DB_PASS")
+db = os.getenv("DB_NAME")
 
 conn = mysql.connector.connect(
     host=host,

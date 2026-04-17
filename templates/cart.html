@@ -145,7 +145,8 @@
             padding-top: 15px;
             color: #ECEFF4;
         }
-        .promo-input {
+        .promo-input,
+        .membership-select {
             width: 100%;
             padding: 10px;
             margin-top: 8px;
@@ -155,9 +156,26 @@
             border-radius: 5px;
             color: #ECEFF4;
         }
-        .promo-input::placeholder { color: #88C0D0; }
-        .promo-label {
+        .promo-input::placeholder {
+            color: #88C0D0;
+        }
+        .promo-label,
+        .membership-label,
+        .membership-current {
             color: #D8DEE9;
+        }
+        .membership-box {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: #434C5E;
+            border: 1px solid #4C566A;
+            border-radius: 8px;
+        }
+        .membership-box p {
+            margin: 0 0 10px;
+            color: #D8DEE9;
+            font-size: 14px;
         }
         .checkout-btn,
         .back-btn {
@@ -203,7 +221,7 @@
 <body>
 
 <header>
-    <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
+    <img src="{{url_for('static', filename='elevate_retail_logo_4.png')}}" alt="Elevate Retail Logo" class="logo">
     <h2>My Cart</h2>
 </header>
 
@@ -214,26 +232,26 @@
         {% if cart %}
             {% for item in cart %}
                 <div class="cart-item">
-                    <img src="{{ item.image }}" alt="{{ item.name }}">
+                    <img src="{{item.image}}" alt="{{item.name}}">
                     <div class="item-details">
-                        <h3>{{ item.name }}</h3>
-                        <p>{{ item.description }}</p>
-                        <div class="price">${{ "%.2f"|format(item.price) }} each</div>
+                        <h3>{{item.name}}</h3>
+                        <p>{{item.description}}</p>
+                        <div class="price">${{"%.2f"|format(item.price)}} each</div>
                         <div class="item-actions">
-                            <form action="{{ url_for('cart.update_cart') }}" method="POST">
-                                <input type="hidden" name="product_name" value="{{ item.name }}">
-                                <label for="qty{{ loop.index }}">Qty:</label>
-                                <input type="number" id="qty{{ loop.index }}" name="quantity" value="{{ item.quantity }}" min="1">
+                            <form action="{{url_for('cart.update_cart')}}" method="POST">
+                                <input type="hidden" name="product_name" value="{{item.name}}">
+                                <label for="qty{{loop.index}}">Qty:</label>
+                                <input type="number" id="qty{{loop.index}}" name="quantity" value="{{item.quantity}}" min="1">
                                 <button type="submit" class="btn btn-update">Update</button>
                             </form>
-                            <form action="{{ url_for('cart.remove_from_cart') }}" method="POST">
-                                <input type="hidden" name="product_name" value="{{ item.name }}">
+                            <form action="{{url_for('cart.remove_from_cart')}}" method="POST">
+                                <input type="hidden" name="product_name" value="{{item.name}}">
                                 <button type="submit" class="btn btn-remove">Remove</button>
                             </form>
                         </div>
                     </div>
                     <div>
-                        <strong>${{ "%.2f"|format(item.price * item.quantity) }}</strong>
+                        <strong>${{"%.2f"|format(item.price * item.quantity)}}</strong>
                     </div>
                 </div>
             {% endfor %}
@@ -244,7 +262,8 @@
 
     <aside class="cart-summary">
         <h2>Order Summary</h2>
-        <form action="{{ url_for('cart.apply_promo') }}" method="POST" style="margin-top: 15px;">
+
+        <form action="{{url_for('cart.apply_promo')}}" method="POST" style="margin-top: 15px;">
             <label class="promo-label" for="promo_code"><strong>Promo Code</strong></label>
             <input type="text"
                    id="promo_code"
@@ -255,33 +274,53 @@
             <button type="submit" class="btn btn-update" style="margin-top: 10px;">Apply Code</button>
         </form>
 
+        <div class="membership-box">
+            <label class="membership-label"><strong>Membership Upgrade</strong></label>
+            <p class="membership-current">Current Membership: <strong>{{current_membership_level}}</strong></p>
+
+            <form action="{{url_for('cart.update_membership')}}" method="POST">
+                <select name="membership_level" class="membership-select">
+                    {% for level, price in membership_prices.items() %}
+                        <option value="{{ level }}" {% if level == selected_membership_level %}selected{% endif %}>
+                            {{level}} {% if price == 0 %}(Free){% else %}(${{price}}){% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-update" style="margin-top: 10px;">Update Membership</button>
+            </form>
+        </div>
+
         <div class="summary-row">
             <span>Subtotal</span>
-            <span>${{ "%.2f"|format(subtotal) }}</span>
+            <span>${{"%.2f"|format(subtotal)}}</span>
         </div>
         <div class="summary-row">
             <span>Membership Discount</span>
-            <span>-${{ "%.2f"|format(membership_discount) }}</span>
+            <span>-${{"%.2f"|format(membership_discount)}}</span>
         </div>
         <div class="summary-row">
             <span>Promo Discount</span>
-            <span>-${{ "%.2f"|format(promo_discount) }}</span>
+            <span>-${{"%.2f"|format(promo_discount)}}</span>
+        </div>
+        <div class="summary-row">
+            <span>Membership Upgrade</span>
+            <span>${{"%.2f"|format(membership_upgrade_cost)}}</span>
         </div>
         <div class="summary-row">
             <span>Sales Tax</span>
-            <span>${{ "%.2f"|format(sales_tax) }}</span>
+            <span>${{"%.2f"|format(sales_tax)}}</span>
         </div>
         <div class="summary-row">
             <span>Shipping</span>
-            <span>${{ "%.2f"|format(shipping) }}</span>
+            <span>${{"%.2f"|format(shipping)}}</span>
         </div>
         <div class="summary-row summary-total">
             <span>Total</span>
-            <span>${{ "%.2f"|format(total) }}</span>
+            <span>${{"%.2f"|format(total)}}</span>
         </div>
 
-        <a href="{{ url_for('cart.payment') }}" class="checkout-btn">Proceed to Checkout</a>
-        <a href="{{ url_for('home_page') }}" class="back-btn">Back to Products</a>
+        <a href="{{url_for('cart.payment')}}" class="checkout-btn">Proceed to Checkout</a>
+        <a href="{{url_for('home_page')}}" class="back-btn">Back to Products</a>
     </aside>
 
 </div>

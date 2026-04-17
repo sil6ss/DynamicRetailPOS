@@ -13,6 +13,13 @@ PROMO_CODES = {
     "NEW5": 5.00
 }
 
+MEMBERSHIP_PRICES = {
+    "Bronze": 0,
+    "Silver": 30,
+    "Gold": 60,
+    "Platinum": 100
+}
+
 
 def get_db_connection():
     from home import host, user, passw, db
@@ -53,8 +60,41 @@ def get_membership_discount_rate(customer_id):
     return rate
 
 
-# Calculates cart totals (membership, promo, tax, shipping)
-def calculate_cart_totals(cart_items, promo_code=None, membership_rate=0.0):
+def get_current_membership_level(customer_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT Membership_Level
+        FROM Customer
+        WHERE Customer_ID = %s
+          AND Deleted_At IS NULL
+    """, (customer_id,))
+    row = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if not row or row[0] is None:
+        return "Bronze"
+
+    return row[0]
+
+
+def calculate_membership_upgrade_cost(current_level, selected_level):
+    current_price = MEMBERSHIP_PRICES.get(current_level, 0)
+    selected_price = MEMBERSHIP_PRICES.get(selected_level, 0)
+
+    upgrade_cost = selected_price - current_price
+
+    if upgrade_cost < 0:
+        upgrade_cost = 0
+
+    return upgrade_cost
+
+
+# Calculates cart totals (membership, promo, tax, shipping, upgrade)
+def calculate_cart_totals(cart_items, promo_code=None, membership_rate=0.0, membership_upgrade_cost=0.0):
     subtotal = sum(item["price"] * item["quantity"] for item in cart_items)
 
     membership_discount = subtotal * membership_rate
@@ -73,12 +113,13 @@ def calculate_cart_totals(cart_items, promo_code=None, membership_rate=0.0):
     tax_rate = 0.07
     sales_tax = discounted_subtotal * tax_rate
     shipping = 0.00
-    total = discounted_subtotal + sales_tax + shipping
+    total = discounted_subtotal + sales_tax + shipping + membership_upgrade_cost
 
     return {
         "subtotal": subtotal,
         "membership_discount": membership_discount,
         "promo_discount": promo_discount,
+        "membership_upgrade_cost": membership_upgrade_cost,
         "sales_tax": sales_tax,
         "shipping": shipping,
         "total": total,
@@ -95,12 +136,18 @@ def cart():
 
     promo_code = session.get("promo_code", "")
     cart_items = session.get("cart", [])
+
+    current_level = get_current_membership_level(current_user.id)
+    selected_level = session.get("selected_membership_level", current_level)
+
     membership_rate = get_membership_discount_rate(current_user.id)
+    membership_upgrade_cost = calculate_membership_upgrade_cost(current_level, selected_level)
 
     totals = calculate_cart_totals(
         cart_items,
         promo_code,
-        membership_rate
+        membership_rate,
+        membership_upgrade_cost
     )
 
     return render_template(
@@ -109,11 +156,29 @@ def cart():
         subtotal=totals["subtotal"],
         membership_discount=totals["membership_discount"],
         promo_discount=totals["promo_discount"],
+        membership_upgrade_cost=totals["membership_upgrade_cost"],
         sales_tax=totals["sales_tax"],
         shipping=totals["shipping"],
         total=totals["total"],
-        promo_code=promo_code
+        promo_code=promo_code,
+        current_membership_level=current_level,
+        selected_membership_level=selected_level,
+        membership_prices=MEMBERSHIP_PRICES
     )
+
+
+# Route to save selected membership level
+@cart_bp.route("/update_membership", methods=["POST"])
+@login_required
+def update_membership():
+    current_level = get_current_membership_level(current_user.id)
+    selected_level = request.form.get("membership_level", current_level)
+
+    if selected_level not in MEMBERSHIP_PRICES:
+        selected_level = current_level
+
+    session["selected_membership_level"] = selected_level
+    return redirect(url_for("cart.cart"))
 
 
 # Route to item quantity update
@@ -170,6 +235,7 @@ def remove_from_cart():
 def clear_cart():
     session.pop("cart", None)
     session.pop("promo_code", None)
+    session.pop("selected_membership_level", None)
     return redirect(url_for("cart.cart"))
 
 
@@ -178,12 +244,18 @@ def clear_cart():
 def payment():
     cart_items = session.get("cart", [])
     promo_code = session.get("promo_code", "")
+
+    current_level = get_current_membership_level(current_user.id)
+    selected_level = session.get("selected_membership_level", current_level)
+
     membership_rate = get_membership_discount_rate(current_user.id)
+    membership_upgrade_cost = calculate_membership_upgrade_cost(current_level, selected_level)
 
     totals = calculate_cart_totals(
         cart_items,
         promo_code,
-        membership_rate
+        membership_rate,
+        membership_upgrade_cost
     )
 
     return render_template(
@@ -192,10 +264,13 @@ def payment():
         subtotal=totals["subtotal"],
         membership_discount=totals["membership_discount"],
         promo_discount=totals["promo_discount"],
+        membership_upgrade_cost=totals["membership_upgrade_cost"],
         sales_tax=totals["sales_tax"],
         shipping=totals["shipping"],
         total=totals["total"],
-        promo_code=promo_code
+        promo_code=promo_code,
+        current_membership_level=current_level,
+        selected_membership_level=selected_level
     )
 
 
@@ -209,12 +284,18 @@ def order_confirmation():
         return redirect(url_for("cart.cart"))
 
     payment_method = request.form.get("payment_method", "N/A")
+
+    current_level = get_current_membership_level(current_user.id)
+    selected_level = session.get("selected_membership_level", current_level)
+
     membership_rate = get_membership_discount_rate(current_user.id)
+    membership_upgrade_cost = calculate_membership_upgrade_cost(current_level, selected_level)
 
     totals = calculate_cart_totals(
         cart_items,
         promo_code,
-        membership_rate
+        membership_rate,
+        membership_upgrade_cost
     )
 
     conn = get_db_connection()
@@ -234,7 +315,7 @@ def order_confirmation():
         """, (
             current_user.id,
             datetime.now(),
-            "Placed",
+            "Pending",
             "Pending",
             None
         ))
@@ -297,11 +378,19 @@ def order_confirmation():
         """, (
             order_id,
             payment_method,
-            "Confirmed",
+            "Completed",
             datetime.now(),
             datetime.now(),
             datetime.now()
         ))
+
+        # 4. Update customer membership level if upgraded
+        if selected_level != current_level:
+            cursor.execute("""
+                UPDATE Customer
+                SET Membership_Level = %s
+                WHERE Customer_ID = %s
+            """, (selected_level, current_user.id))
 
         conn.commit()
 
@@ -313,12 +402,14 @@ def order_confirmation():
             "subtotal": totals["subtotal"],
             "membership_discount": totals["membership_discount"],
             "promo_discount": totals["promo_discount"],
+            "membership_upgrade_cost": totals["membership_upgrade_cost"],
             "tax": totals["sales_tax"],
             "total_paid": totals["total"]
         }
 
         session.pop("cart", None)
         session.pop("promo_code", None)
+        session.pop("selected_membership_level", None)
 
         return render_template(
             "order_confirmation.html",
