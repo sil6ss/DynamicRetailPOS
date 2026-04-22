@@ -203,7 +203,7 @@
 </header>
 
 {% if current_user.is_authenticated %}
-    <a href="{{ url_for('auth.logout') }}" class="signin-btn">Sign Out</a>
+    <a href="{{ url_for('user.profile') }}" class="signin-btn">My Profile</a>
 {% else %}
     <a href="{{ url_for('auth.login') }}" class="signin-btn">Sign In</a>
 {% endif %}

@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required, UserMixin
 
 auth_bp = Blueprint('auth', __name__)
+auth_bp.secret_key = "elevate-retail-secret-key"
 
 class User(UserMixin):
     def __init__(self, customer_id, first_name, last_name, email):

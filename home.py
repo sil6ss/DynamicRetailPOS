@@ -6,15 +6,18 @@ from flask_login import LoginManager
 from auth import auth_bp, User
 import mysql.connector
 from cart import cart_bp
+from user import user_bp
 import atexit
 import os
 from dotenv import load_dotenv
+
 
 # Initial setup, along with connection to database
 home = Flask(__name__)
 home.secret_key = "elevate-retail-secret-key"
 home.register_blueprint(cart_bp)
 home.register_blueprint(auth_bp)
+home.register_blueprint(user_bp)
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -23,11 +26,13 @@ login_manager.init_app(home)
 load_dotenv()
 host = os.getenv("DB_HOST")
 user = os.getenv("DB_USER")
+port = os.getenv("DB_PORT")
 passw = os.getenv("DB_PASS")
 db = os.getenv("DB_NAME")
 
 conn = mysql.connector.connect(
     host=host,
+    port=port,
     user=user,
     password=passw,
     database=db
