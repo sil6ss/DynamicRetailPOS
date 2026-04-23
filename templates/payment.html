@@ -87,6 +87,7 @@
             font-size: 16px;
             font-weight: bold;
             border-radius: 6px;
+            cursor: pointer; /* CHANGED: makes button feel clickable */
         }
         .btn-back {
             background: #BF616A;
@@ -138,6 +139,7 @@
         <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" class="logo">
         <h2>Payment</h2>
     </div>
+
     <div class="payment-container">
         <form action="{{ url_for('cart.order_confirmation') }}" method="POST">
             <label for="payment-method">Select Payment Method</label>
@@ -148,10 +150,12 @@
                 <option value="Google Pay">Google Pay</option>
                 <option value="PayPal">PayPal</option>
             </select>
+
             <!-- CARD FIELDS -->
             <div class="card-fields">
                 <label for="card-number">Card Number</label>
                 <input type="text" id="card-number" name="card_number" placeholder="1234 5678 9012 3456">
+
                 <div class="row">
                     <div class="half">
                         <label for="exp-date">Expiration Date</label>
@@ -163,34 +167,58 @@
                     </div>
                 </div>
             </div>
+
             <!-- EMAIL FIELD -->
             <div id="email-field" class="email-field">
                 <label for="email">Account Email</label>
                 <input type="email" id="email" name="email" placeholder="example@example.com">
             </div>
+
             <!-- ADDRESS FIELD -->
             <div class="address-field">
                 <label for="address">Street Address</label>
-                <input type="text" id="address" name="address" placeholder="123 Main St">
+                <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="123 Main St"
+                    value="{{ address.Address_Line_l if address else '' }}"> <!-- CHANGED: preload saved address -->
+
                 <div class="row">
                     <div class="half">
                         <label for="city">City</label>
-                        <input type="text" id="city" name="city" placeholder="City">
+                        <input
+                            type="text"
+                            id="city"
+                            name="city"
+                            placeholder="City"
+                            value="{{ address.City if address else '' }}"> <!-- CHANGED: preload saved city -->
                     </div>
                     <div class="half">
                         <label for="state">State</label>
-                        <input type="text" id="state" name="state" placeholder="State">
+                        <input
+                            type="text"
+                            id="state"
+                            name="state"
+                            placeholder="State"
+                            value="{{ address.State if address else '' }}"> <!-- CHANGED: preload saved state -->
                     </div>
                 </div>
+
                 <label for="zip">ZIP Code</label>
-                <input type="text" id="zip" name="zip" placeholder="27284"
+                <input
+                    type="text"
+                    id="zip"
+                    name="zip"
+                    placeholder="27284"
+                    value="{{ address.Zip_Code if address else '' }}"
                     maxlength="5"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5);">
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 5);"><!-- CHANGED: preload saved zip -->
             </div>
 
             <div class="buttons">
                 <button type="submit" class="btn-confirm">Confirm Payment</button>
-                <a href="{{ url_for('cart.view_cart') }}" class="btn-back">Back to Cart</a>
+                <a href="{{ url_for('cart.cart') }}" class="btn-back">Back to Cart</a> <!-- CHANGED: fixed wrong endpoint -->
             </div>
 
             <div class="summary-box">
@@ -227,6 +255,7 @@
             const method = document.getElementById("payment-method").value;
             const cardFields = document.querySelector(".card-fields");
             const emailField = document.getElementById("email-field");
+
             if (method === "Credit Card" || method === "Debit Card") {
                 cardFields.style.display = "block";
                 emailField.style.display = "none";
@@ -236,7 +265,6 @@
             }
         }
 
-        // Show card fields by default
         toggleFields();
     </script>
 </body>

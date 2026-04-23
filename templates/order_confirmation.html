@@ -7,9 +7,10 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6f9;
+      background: #2E3440;
       margin: 0;
       padding: 20px;
+      color: #ECEFF4;
     }
 
     .container {
@@ -18,30 +19,63 @@
     }
 
     .header {
-      background: linear-gradient(to right, #3b82f6, #2563eb);
-      color: white;
+      background: #3B4252;
+      color: #ECEFF4;
       padding: 20px;
       border-radius: 12px;
       margin-bottom: 20px;
+      border: 1px solid #4C566A;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 8px 0;
+      color: #ECEFF4;
+    }
+
+    .header p {
+      margin: 0;
+      color: #D8DEE9;
     }
 
     .grid {
       display: flex;
       gap: 20px;
+      flex-wrap: wrap;
     }
 
     .card {
-      background: white;
+      background: #3B4252;
       padding: 20px;
       border-radius: 12px;
       flex: 1;
+      border: 1px solid #4C566A;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      min-width: 320px;
+    }
+
+    .card h2 {
+      color: #ECEFF4;
+      margin-top: 0;
+      border-bottom: 1px solid #4C566A;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      color: #D8DEE9;
+    }
+
+    .card strong {
+      color: #ECEFF4;
     }
 
     .product-item {
       display: flex;
       gap: 15px;
       padding: 15px;
-      border: 1px solid #eee;
+      border: 1px solid #4C566A;
+      background: #434C5E;
       border-radius: 10px;
       margin-bottom: 15px;
       align-items: center;
@@ -52,32 +86,46 @@
       height: 90px;
       object-fit: cover;
       border-radius: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid #4C566A;
+      background: #2E3440;
+    }
+
+    .product-item p {
+      margin: 6px 0;
+      color: #D8DEE9;
     }
 
     .price {
       margin-left: auto;
       font-weight: bold;
       font-size: 18px;
+      color: #ECEFF4;
+      white-space: nowrap;
     }
 
     .summary p {
       display: flex;
       justify-content: space-between;
+      margin: 10px 0;
+      color: #D8DEE9;
     }
 
     .total {
       font-size: 22px;
       font-weight: bold;
-      margin-top: 10px;
+      margin-top: 15px;
+      padding-top: 12px;
+      border-top: 1px solid #4C566A;
+      color: #ECEFF4;
     }
 
     .success-box {
-      background: #d1fae5;
+      background: #A3BE8C;
       padding: 15px;
       border-radius: 10px;
       margin-top: 20px;
-      color: #065f46;
+      color: #2E3440;
+      font-weight: bold;
     }
 
     .btn {
@@ -85,19 +133,28 @@
       text-align: center;
       padding: 12px;
       border-radius: 8px;
-      margin-top: 10px;
+      margin-top: 12px;
       text-decoration: none;
       font-weight: bold;
+      transition: 0.2s ease;
     }
 
     .btn-primary {
-      background: #2563eb;
-      color: white;
+      background: #5E81AC;
+      color: #ECEFF4;
+    }
+
+    .btn-primary:hover {
+      background: #81A1C1;
     }
 
     .btn-secondary {
-      background: #e5e7eb;
-      color: #111;
+      background: #BF616A;
+      color: #ECEFF4;
+    }
+
+    .btn-secondary:hover {
+      background: #D08770;
     }
   </style>
 </head>
@@ -114,19 +171,17 @@
   <div class="grid">
 
     <div class="card">
-
       <h2>Order Details</h2>
       <p><strong>Order #:</strong> {{ order.order_number }}</p>
       <p><strong>Date:</strong> {{ order.date }}</p>
       <p><strong>Customer:</strong> {{ order.customer_name }}</p>
       <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
 
-      <!-- ADDRESS -->
       <h2>Shipping Address</h2>
-      <p><strong>Street:</strong> {{ order.address.street }}</p>
-      <p><strong>City:</strong> {{ order.address.city }}</p>
-      <p><strong>State:</strong> {{ order.address.state }}</p>
-      <p><strong>ZIP Code:</strong> {{ order.address.zip }}</p>
+      <p><strong>Street:</strong> {{ address.Address_Line_l if address else 'N/A' }}</p>
+      <p><strong>City:</strong> {{ address.City if address else 'N/A' }}</p>
+      <p><strong>State:</strong> {{ address.State if address else 'N/A' }}</p>
+      <p><strong>ZIP Code:</strong> {{ address.Zip_Code if address else 'N/A' }}</p>
 
       <h2>Items Purchased</h2>
       {% for item in order_items %}
@@ -143,7 +198,6 @@
     </div>
 
     <div class="card">
-
       <h2>Payment Summary</h2>
 
       <div class="summary">
@@ -163,7 +217,6 @@
 
       <a href="#" class="btn btn-primary">Track Order</a>
       <a href="{{ url_for('home_page') }}" class="btn btn-secondary">Continue Shopping</a>
-
     </div>
 
   </div>

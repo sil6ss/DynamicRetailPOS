@@ -4,13 +4,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_login import LoginManager
 from auth import auth_bp, User
-import mysql.connector
 from cart import cart_bp
 from user import user_bp
-import atexit
-import os
-from dotenv import load_dotenv
-
+from db import get_db_connection
 
 # Initial setup, along with connection to database
 home = Flask(__name__)
@@ -23,31 +19,12 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(home)
 
-load_dotenv()
-host = os.getenv("DB_HOST")
-user = os.getenv("DB_USER")
-port = os.getenv("DB_PORT")
-passw = os.getenv("DB_PASS")
-db = os.getenv("DB_NAME")
-
-conn = mysql.connector.connect(
-    host=host,
-    port=port,
-    user=user,
-    password=passw,
-    database=db
-)
-
-cursor = conn.cursor()
-
-if conn.is_connected():
-    print("Connection Successful!")
-else:
-    print("Connection Failed.")
-
 
 # Retrieve all products from database containing fields necessary for webpage
 def get_products():
+    conn = get_db_connection()  # CHANGED: open a fresh connection for this function
+    cursor = conn.cursor()  # CHANGED: create a fresh cursor for this function
+
     cursor.execute("""
         SELECT
             Inventory.Inventory_ID,
@@ -64,6 +41,10 @@ def get_products():
             ON Product.Category_ID = Product_Category.Category_ID
     """)
     sql_products = cursor.fetchall()
+
+    cursor.close()  # CHANGED: close cursor after query is done
+    conn.close()  # CHANGED: close connection after query is done
+
     return_products = []
 
     for item in sql_products:
@@ -81,15 +62,12 @@ def get_products():
 # Base home page, with lists for the retrieved products and an empty cart for the user to use across the pages
 @home.route("/")
 def home_page():
-    if "products" not in session or not session["products"]:
-        session["products"] = get_products()
-
-    products = session.get("products", [])
+    products = get_products()  # CHANGED: always reload products from DB so stock updates show immediately
     cart = session.get("cart", [])
     query = request.args.get("q", "").strip().lower()
 
     if query:
-        filtered_products = [item for item in session["products"] if query in item["name"].lower()]
+        filtered_products = [item for item in products if query in item["name"].lower()]  # CHANGED: search fresh DB data
     else:
         filtered_products = products
 
@@ -132,26 +110,23 @@ def add_to_cart():
 
 @login_manager.user_loader
 def load_user(user_id):
+    conn = get_db_connection()  # CHANGED: open a fresh connection when loading a user
+    cursor = conn.cursor()  # CHANGED: create a fresh cursor when loading a user
+
     cursor.execute("""
         SELECT Customer_ID, First_Name, Last_Name, Email
         FROM Customer
         WHERE Customer_ID = %s
     """, (user_id,))
     row = cursor.fetchone()
+
+    cursor.close()  # CHANGED: close cursor after query is done
+    conn.close()  # CHANGED: close connection after query is done
+
     if row:
         return User(row[0], row[1], row[2], row[3])
     return None
 
-
-# Close connection to database to prevent errors
-def cleanup():
-    if conn.is_connected():
-        conn.close()
-        if conn.is_connected() is False:
-            print("Connection Closed")
-
-
-atexit.register(cleanup)
 
 if __name__ == "__main__":
     home.run(debug=True)

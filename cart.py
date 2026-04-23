@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_login import login_required, current_user
 import mysql.connector
 from datetime import datetime
+from db import get_db_connection
 
 cart_bp = Blueprint("cart", __name__)
 cart_bp.secret_key = "elevate-retail-secret-key"
@@ -19,16 +20,6 @@ MEMBERSHIP_PRICES = {
     "Gold": 60,
     "Platinum": 100
 }
-
-
-def get_db_connection():
-    from home import host, user, passw, db
-    return mysql.connector.connect(
-        host=host,
-        user=user,
-        password=passw,
-        database=db
-    )
 
 
 def get_membership_discount_rate(customer_id):
@@ -347,6 +338,7 @@ def add_recommended_to_cart():
             })
 
         session["cart"] = cart_items
+        session.modified = True  # CHANGED: makes sure Flask saves the cart update
 
     except mysql.connector.Error as err:
         print(f"Add recommended item error: {err}")
@@ -366,6 +358,7 @@ def clear_cart():
     session.pop("promo_code", None)
     session.pop("selected_membership_level", None)
     return redirect(url_for("cart.cart"))
+
 
 @cart_bp.route("/payment")
 @login_required
@@ -405,12 +398,13 @@ def payment():
         address=address
     )
 
+
 def get_customer_address(customer_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT Address_Line_1, Address_Line_2, City, State, Zip_Code, Country
+        SELECT Address_Line_l, Address_Line_2, City, State, Zip_Code, Country
         FROM Customer_Address
         WHERE Customer_ID = %s AND Deleted_At IS NULL
         ORDER BY Created_At DESC
@@ -422,6 +416,7 @@ def get_customer_address(customer_id):
     cursor.close()
     conn.close()
     return address
+
 
 @cart_bp.route("/order_confirmation", methods=["POST"])
 @login_required
