@@ -182,6 +182,7 @@
       <p><strong>City:</strong> {{ address.City if address else 'N/A' }}</p>
       <p><strong>State:</strong> {{ address.State if address else 'N/A' }}</p>
       <p><strong>ZIP Code:</strong> {{ address.Zip_Code if address else 'N/A' }}</p>
+      <p><strong>Country:</strong> {{ address.Country if address else 'N/A' }}</p>
 
       <h2>Items Purchased</h2>
       {% for item in order_items %}
