@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order History</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #2E3440;
+            margin: 0;
+            padding: 20px;
+            color: #ECEFF4;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #3B4252, #2E3440);
+            color: #ECEFF4;
+            padding: 26px 20px;
+            border-radius: 12px;
+            margin: 0 auto 20px;
+            border: 1px solid #4C566A;
+            text-align: center;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            max-width: 1200px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            color: #ECEFF4;
+            font-size: 44px;
+            font-weight: bold;
+        }
+
+        .page-header p {
+            margin: 8px 0 0;
+            color: #E5E9F0;
+            font-size: 20px;
+        }
+
+        .logo {
+            max-width: 220px;
+            height: auto;
+            display: block;
+            margin: 0 auto 12px;
+            background: #3B4252;
+            border-radius: 50px;
+        }
+
+        .order-card {
+            background: #ECEFF4;
+            color: #2E3440;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #D8DEE9;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-card h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #2E3440;
+            border-bottom: 1px solid #D8DEE9;
+            padding-bottom: 8px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #3B4252;
+        }
+
+        .value {
+            color: #2E3440;
+        }
+
+        .items-section {
+            margin-top: 20px;
+        }
+
+        .items-section h3 {
+            margin-bottom: 15px;
+            color: #2E3440;
+        }
+
+        .item-card {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid #D8DEE9;
+            background: #E5E9F0;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .item-card img {
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #D8DEE9;
+            background: #D8DEE9;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-info strong {
+            color: #2E3440;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .item-info p {
+            margin: 4px 0;
+            color: #3B4252;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #2E3440;
+            white-space: nowrap;
+        }
+
+        .empty {
+            background: #ECEFF4;
+            color: #2E3440;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #D8DEE9;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 5px;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: #5E81AC;
+            color: #ECEFF4;
+            border-color: #4C6F9E;
+        }
+
+        .btn-primary:hover {
+            background: #81A1C1;
+        }
+
+        .btn-secondary {
+            background: #4C566A;
+            color: #ECEFF4;
+            border-color: #5E81AC;
+        }
+
+        .btn-secondary:hover {
+            background: #5E81AC;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 12px;
+            }
+
+            .page-header h1 {
+                font-size: 34px;
+            }
+
+            .page-header p {
+                font-size: 16px;
+            }
+
+            .item-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .item-card img {
+                width: 100%;
+                height: auto;
+                max-width: 250px;
+            }
+
+            .item-price {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header class="page-header">
+            <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
+            <h1>Order History</h1>
+            <p>Review your previous orders, payment details, and purchased items.</p>
+        </header>
+
+        {% if orders %}
+            {% for order in orders %}
+            <div class="order-card">
+                <h2>Order #{{order.Order_ID}}</h2>
+
+                <div class="row">
+                    <span class="label">Date:</span>
+                    <span class="value">{{order.Formatted_Order_Date}}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Order Status:</span>
+                    <span class="value">{{order.Order_Status}}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Fulfillment Status:</span>
+                    <span class="value">{{order.Fulfillment_Status}}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Payment Method:</span>
+                    <span class="value">{{order.Payment_Method or 'N/A'}}</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Total:</span>
+                    <span class="value">${{"%.2f"|format(order.Order_Total)}}</span>
+                </div>
+
+                <div class="items-section">
+                    <h3>Items in this Order</h3>
+
+                    {% if order["items"] %}
+                        {% for item in order["items"] %}
+                        <div class="item-card">
+                            <img src="{{item.image}}" alt="{{item.name}}">
+                            <div class="item-info">
+                                <strong>{{item.name}}</strong>
+                                <p>{{item.description}}</p>
+                                <p>Qty: {{item.quantity}}</p>
+                            </div>
+                            <div class="item-price">
+                                ${{"%.2f"|format(item.line_total)}}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No items found for this order.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">
+                <p>No orders found for this account.</p>
+            </div>
+        {% endif %}
+
+        <div class="buttons">
+            <a href="{{url_for('home_page')}}" class="btn btn-primary">Continue Shopping</a>
+            <a href="{{url_for('user.profile')}}" class="btn btn-secondary">Back to Profile</a>
+        </div>
+
+    </div>
+</body>
+</html>
