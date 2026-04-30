@@ -336,6 +336,28 @@
             color: #7B8794;
         }
 
+        .search-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .back-products-btn {
+            background: #AAC8E3;
+            color: #1D3348;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 7px 14px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .back-products-btn:hover {
+            background: #81A1C1;
+        }
+
         button[type="submit"] {
             background: #5E81AC;
             color: #ECEFF4;
@@ -613,9 +635,13 @@
         <div class="items-container">
             <h2>Available Products</h2>
 
-            <form action="/" method="GET">
+            <form action="/" method="GET" class="search-form">
                 <input type="text" name="q" placeholder="Search items..." value="{{ request.args.get('q', '') }}">
                 <button type="submit">Search</button>
+
+                {% if request.args.get('q') %}
+                    <a href="{{ url_for('home_page') }}" class="back-products-btn">Back to All Products</a>
+                {% endif %}
             </form>
 
             <section class="items">
