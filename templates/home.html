@@ -10,6 +10,7 @@
             margin: 0;
             padding: 20px;
             background: #2E3440;
+            color: #ECEFF4;
         }
 
         .page-header {
@@ -46,6 +47,22 @@
             border-radius: 50px;
         }
 
+        .hero-sale-banner {
+            max-width: 1200px;
+            margin: 0 auto 18px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #4C566A;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            background: #3B4252;
+        }
+
+        .hero-sale-banner img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+
         .promo-banner-static {
             background: #5E81AC;
             color: #ECEFF4;
@@ -73,12 +90,18 @@
             place-items: center;
         }
 
+        .items-container h2 {
+            color: #ECEFF4;
+            margin-bottom: 0;
+        }
+
         .items {
-            background: #3B4252;
+            background: #AEB8C6;
+            color: #2E3440;
             padding: 20px;
             border-radius: 12px;
-            border: 1px solid #4C566A;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #8F9AAA;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
@@ -93,9 +116,16 @@
             text-align: center;
             padding: 15px;
             margin-bottom: 15px;
-            background: #434C5E;
-            border: 1px solid #4C566A;
+            background: #E5E9F0;
+            border: 1px solid #D8DEE9;
             border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
         }
 
         .item-card img {
@@ -103,6 +133,8 @@
             height: 140px;
             object-fit: cover;
             border-radius: 8px;
+            border: 1px solid #D8DEE9;
+            background: #D8DEE9;
         }
 
         .item-details {
@@ -112,18 +144,18 @@
         .item-details h3 {
             margin: 0 0 8px;
             font-size: 18px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .item-details p {
             margin: 0 0 10px;
-            color: #D8DEE9;
+            color: #3B4252;
             font-size: 14px;
         }
 
         .price {
             font-weight: bold;
-            color: #A3BE8C;
+            color: #2F5D34;
             margin-bottom: 10px;
         }
 
@@ -135,6 +167,7 @@
             outline: none;
             cursor: pointer;
             padding: 6px 14px;
+            font-weight: bold;
         }
 
         .add-cart:hover {
@@ -186,8 +219,8 @@
             width: 300px;
             height: 100vh;
             padding: 20px;
-            color: #ECEFF4;
-            background: #3B4252;
+            color: #2E3440;
+            background: #ECEFF4;
             box-shadow: -2px 0 10px rgba(0, 0, 0, 0.4);
             overflow-y: auto;
             z-index: 99;
@@ -206,8 +239,8 @@
             transition: right 0.3s ease;
             width: 300px;
             padding: 15px 20px 20px;
-            background: #2E3440;
-            border-top: 1px solid #4C566A;
+            background: #E5E9F0;
+            border-top: 1px solid #D8DEE9;
             box-shadow: -2px -2px 10px rgba(0, 0, 0, 0.25);
             z-index: 100;
             box-sizing: border-box;
@@ -218,14 +251,14 @@
         }
 
         .cart-subtotal {
-            color: #ECEFF4;
+            color: #2E3440;
             font-weight: bold;
             margin: 0 0 8px;
             font-size: 15px;
         }
 
         .side-deal-message {
-            color: #88C0D0;
+            color: #5E81AC;
             font-size: 13px;
             line-height: 1.4;
             margin: 0 0 12px;
@@ -239,6 +272,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .proceed-cart:hover {
@@ -252,10 +286,10 @@
             text-align: left;
             padding: 10px;
             margin-bottom: 10px;
-            background: #434C5E;
-            border: 1px solid #4C566A;
+            background: #E5E9F0;
+            border: 1px solid #D8DEE9;
             border-radius: 10px;
-            color: #ECEFF4;
+            color: #2E3440;
             width: 100%;
             min-height: 90px;
             box-sizing: border-box;
@@ -266,6 +300,8 @@
             height: 70px;
             object-fit: cover;
             border-radius: 8px;
+            border: 1px solid #D8DEE9;
+            background: #D8DEE9;
             flex-shrink: 0;
         }
 
@@ -281,22 +317,23 @@
             font-size: 15px;
             line-height: 1.2;
             word-break: normal;
+            color: #2E3440;
         }
 
         .empty-cart {
-            color: #D8DEE9;
+            color: #3B4252;
         }
 
         input[type="text"] {
-            background: #434C5E;
-            border: 1px solid #4C566A;
+            background: #FFFFFF;
+            border: 1px solid #C7D0DD;
             border-radius: 5px;
-            color: #ECEFF4;
+            color: #2E3440;
             padding: 6px 10px;
         }
 
         input[type="text"]::placeholder {
-            color: #88C0D0;
+            color: #7B8794;
         }
 
         button[type="submit"] {
@@ -306,6 +343,7 @@
             border-radius: 5px;
             padding: 6px 14px;
             cursor: pointer;
+            font-weight: bold;
         }
 
         button[type="submit"]:hover {
@@ -313,8 +351,9 @@
         }
 
         p1 {
-            color: #D8DEE9;
+            color: #5E81AC;
             font-size: 13px;
+            font-weight: bold;
         }
 
         .signin-btn {
@@ -335,6 +374,177 @@
 
         .signin-btn:hover {
             background: #81A1C1;
+        }
+
+        /* Product details modal */
+        .product-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: rgba(0, 0, 0, 0.65);
+        }
+
+        .product-modal-content {
+            width: 90%;
+            max-width: 900px;
+            margin: 5% auto;
+            background: #AEB8C6;
+            color: #2E3440;
+            border: 1px solid #8F9AAA;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            padding: 24px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2E3440;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #5E81AC;
+        }
+
+        .product-modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .modal-image-wrap {
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .modal-image-wrap img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #D8DEE9;
+            background: #D8DEE9;
+        }
+
+        .modal-details {
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .modal-details h2 {
+            margin: 0 30px 10px 0;
+            color: #2E3440;
+        }
+
+        .modal-description {
+            color: #3B4252;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .modal-price {
+            color: #2F5D34;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .modal-stock {
+            color: #5E81AC;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .modal-quantity-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .modal-quantity-row label {
+            color: #2E3440;
+            font-weight: bold;
+        }
+
+        .modal-quantity-row input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #C7D0DD;
+            border-radius: 6px;
+            color: #2E3440;
+            background: #FFFFFF;
+        }
+
+        .modal-add-btn {
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            border: none;
+            background: #5E81AC;
+            color: #ECEFF4;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .modal-add-btn:hover {
+            background: #81A1C1;
+        }
+
+        .reviews-section {
+            margin-top: 18px;
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .reviews-section h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #2E3440;
+        }
+
+        .review-card {
+            background: #E5E9F0;
+            border: 1px solid #D8DEE9;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .review-card strong {
+            color: #2E3440;
+        }
+
+        .review-rating {
+            color: #2F5D34;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+
+        .review-card p {
+            margin: 4px 0 0;
+            color: #3B4252;
+            font-size: 14px;
+            line-height: 1.35;
         }
 
         @media (max-width: 850px) {
@@ -363,16 +573,22 @@
             .cart-main {
                 padding: 10px;
             }
+
+            .product-modal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-image-wrap img {
+                height: 240px;
+            }
         }
     </style>
 </head>
 <body>
 
-<header class="page-header">
-    <img class="logo" src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo">
-    <h1>Elevate Retail</h1>
-    <p>Browse products and unlock automatic deals as you shop.</p>
-</header>
+<div class="hero-sale-banner">
+    <img src="{{ url_for('static', filename='summer_sales_banner.png') }}" alt="Summer sales banner">
+</div>
 
 <div class="promo-banner-static">
     Current Promos & Deals:
@@ -395,7 +611,7 @@
 <div class="cart-wrapper">
     <div class="cart-main">
         <div class="items-container">
-            <h2 style="color:#ECEFF4">Available Products</h2>
+            <h2>Available Products</h2>
 
             <form action="/" method="GET">
                 <input type="text" name="q" placeholder="Search items..." value="{{ request.args.get('q', '') }}">
@@ -405,7 +621,15 @@
             <section class="items">
                 {% if products %}
                     {% for item in products %}
-                    <div class="item-card">
+                    <div class="item-card"
+                         onclick="openProductModal(
+                            '{{ item.inventory_id }}',
+                            '{{ item.name | escape }}',
+                            '{{ item.description | escape }}',
+                            '{{ '%.2f'|format(item.price | float) }}',
+                            '{{ item.image | escape }}',
+                            '{{ item.quantity }}'
+                         )">
                         <img src="{{ item.image }}" alt="{{ item.name }}">
                         <div class="item-details">
                             <h3>{{ item.name }}</h3>
@@ -413,12 +637,13 @@
                             <p1 id="stock-{{ item.inventory_id }}">{{item.quantity}} in stock</p1>
                             <div class="price">${{ "%.2f"|format(item.price | float) }} each</div>
 
-                            <form action="{{ url_for('add_to_cart') }}" method="POST" class="add-to-cart-form">
+                            <form action="{{ url_for('add_to_cart') }}" method="POST" class="add-to-cart-form" onclick="event.stopPropagation();">
                                 <input type="hidden" name="inventory_id" value="{{ item.inventory_id }}">
                                 <input type="hidden" name="name" value="{{ item.name }}">
                                 <input type="hidden" name="description" value="{{ item.description }}">
                                 <input type="hidden" name="price" value="{{ item.price }}">
                                 <input type="hidden" name="image" value="{{ item.image }}">
+                                <input type="hidden" name="quantity" value="1">
                                 <button class="add-cart" type="submit">Add to Cart</button>
                             </form>
                         </div>
@@ -456,6 +681,48 @@
     </div>
 </div>
 
+<!-- Product Details Modal -->
+<div id="productModal" class="product-modal">
+    <div class="product-modal-content">
+        <span class="modal-close" onclick="closeProductModal()">&times;</span>
+
+        <div class="product-modal-grid">
+            <div class="modal-image-wrap">
+                <img id="modalImage" src="" alt="Product image">
+            </div>
+
+            <div>
+                <div class="modal-details">
+                    <h2 id="modalName">Product Name</h2>
+                    <p id="modalDescription" class="modal-description"></p>
+                    <div id="modalPrice" class="modal-price"></div>
+                    <div id="modalStock" class="modal-stock"></div>
+
+                    <form action="{{ url_for('add_to_cart') }}" method="POST" class="add-to-cart-form">
+                        <input type="hidden" id="modalInventoryId" name="inventory_id">
+                        <input type="hidden" id="modalProductName" name="name">
+                        <input type="hidden" id="modalProductDescription" name="description">
+                        <input type="hidden" id="modalProductPrice" name="price">
+                        <input type="hidden" id="modalProductImage" name="image">
+
+                        <div class="modal-quantity-row">
+                            <label for="modalQuantity">Quantity:</label>
+                            <input type="number" id="modalQuantity" name="quantity" value="1" min="1">
+                        </div>
+
+                        <button type="submit" class="modal-add-btn">Add to Cart</button>
+                    </form>
+                </div>
+
+                <div class="reviews-section">
+                    <h3>Customer Reviews</h3>
+                    <div id="modalReviews"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document.querySelector(".cart-side-toggle").addEventListener("click", () => {
         document.querySelector(".cart-wrapper").classList.toggle("side-panel-open");
@@ -485,6 +752,365 @@
 
     setInterval(refreshInventory, 5000);
 
+    const fakeReviews = {
+        "Alf Makeup Removal Pads": [
+            {
+                name: "Maya",
+                rating: "★★★★★",
+                comment: "These are soft and work well without feeling rough on my skin."
+            },
+            {
+                name: "Jordan",
+                rating: "★★★★☆",
+                comment: "Good quality pads and easy to use."
+            }
+        ],
+        "Candles by Jan Cinnamon Candle": [
+            {
+                name: "Taylor",
+                rating: "★★★★★",
+                comment: "Smells really cozy and fills the room pretty fast."
+            },
+            {
+                name: "Riley",
+                rating: "★★★★☆",
+                comment: "Nice scent, not too strong, and perfect for fall."
+            }
+        ],
+        "Cover Gal Lipstick": [
+            {
+                name: "Avery",
+                rating: "★★★★★",
+                comment: "Pretty color and it goes on smoothly."
+            },
+            {
+                name: "Sam",
+                rating: "★★★★☆",
+                comment: "Good lipstick for the price. I would buy it again."
+            }
+        ],
+        "Daehan Smartphone": [
+            {
+                name: "Chris",
+                rating: "★★★★★",
+                comment: "Fast phone and the screen looks really clear."
+            },
+            {
+                name: "Morgan",
+                rating: "★★★★☆",
+                comment: "Works well so far and feels easy to use."
+            }
+        ],
+        "Devolo Laptop": [
+            {
+                name: "Alex",
+                rating: "★★★★★",
+                comment: "Runs smoothly and is great for school or work."
+            },
+            {
+                name: "Jamie",
+                rating: "★★★★☆",
+                comment: "Good laptop overall. Battery life is decent too."
+            }
+        ],
+        "Dr. Kleen All-Purpose Cleaner": [
+            {
+                name: "Maya",
+                rating: "★★★★★",
+                comment: "Works really well and makes cleanup quick."
+            },
+            {
+                name: "Jordan",
+                rating: "★★★★☆",
+                comment: "Good cleaner overall. I would buy it again."
+            }
+        ],
+        "Dr. Kleen Toilet Brush": [
+            {
+                name: "Casey",
+                rating: "★★★★☆",
+                comment: "Simple but useful. It gets the job done."
+            },
+            {
+                name: "Skylar",
+                rating: "★★★★★",
+                comment: "Sturdy and easy to clean after using."
+            }
+        ],
+        "Dr. Kleen Window Squeegee": [
+            {
+                name: "Riley",
+                rating: "★★★★★",
+                comment: "Leaves windows looking much cleaner with fewer streaks."
+            },
+            {
+                name: "Drew",
+                rating: "★★★★☆",
+                comment: "Works well on mirrors and glass doors too."
+            }
+        ],
+        "Dress Shirt": [
+            {
+                name: "Morgan",
+                rating: "★★★★★",
+                comment: "Looks nice and fits better than expected."
+            },
+            {
+                name: "Taylor",
+                rating: "★★★★☆",
+                comment: "Good shirt for work or a dressier outfit."
+            }
+        ],
+        "Essentials Hand Soap": [
+            {
+                name: "Jamie",
+                rating: "★★★★★",
+                comment: "Smells clean and does not dry my hands out."
+            },
+            {
+                name: "Alex",
+                rating: "★★★★☆",
+                comment: "Nice everyday hand soap."
+            }
+        ],
+        "Extraordinary Serum": [
+            {
+                name: "Avery",
+                rating: "★★★★★",
+                comment: "Feels lightweight and makes my skin feel smoother."
+            },
+            {
+                name: "Sam",
+                rating: "★★★★☆",
+                comment: "Good serum. I noticed my skin felt softer."
+            }
+        ],
+        "Hoodie": [
+            {
+                name: "Alex",
+                rating: "★★★★★",
+                comment: "Super comfy and fits really well."
+            },
+            {
+                name: "Taylor",
+                rating: "★★★★☆",
+                comment: "Soft material. I wish there were more colors."
+            }
+        ],
+        "iPhone": [
+            {
+                name: "Chris",
+                rating: "★★★★★",
+                comment: "Really nice phone and the camera is great."
+            },
+            {
+                name: "Jordan",
+                rating: "★★★★☆",
+                comment: "Works great, just expensive."
+            }
+        ],
+        "La Rosey Facial Moisturizer": [
+            {
+                name: "Avery",
+                rating: "★★★★★",
+                comment: "Feels light and does not make my skin greasy."
+            },
+            {
+                name: "Morgan",
+                rating: "★★★★☆",
+                comment: "Nice moisturizer. I like that it is fragrance free."
+            }
+        ],
+        "Maycall Mascara": [
+            {
+                name: "Riley",
+                rating: "★★★★★",
+                comment: "Makes my lashes look fuller without clumping too much."
+            },
+            {
+                name: "Casey",
+                rating: "★★★★☆",
+                comment: "Good mascara and easy to apply."
+            }
+        ],
+        "RJ Flat-Screen TV": [
+            {
+                name: "Drew",
+                rating: "★★★★★",
+                comment: "Picture quality looks really good."
+            },
+            {
+                name: "Jamie",
+                rating: "★★★★☆",
+                comment: "Nice TV for the price and easy to set up."
+            }
+        ],
+        "Sandals": [
+            {
+                name: "Skylar",
+                rating: "★★★★★",
+                comment: "Comfortable and cute for everyday wear."
+            },
+            {
+                name: "Maya",
+                rating: "★★★★☆",
+                comment: "Good sandals. They fit true to size."
+            }
+        ],
+        "Serenity by Jan Cinnamon Candle": [
+            {
+                name: "Taylor",
+                rating: "★★★★★",
+                comment: "Really relaxing scent and looks nice on a table."
+            },
+            {
+                name: "Sam",
+                rating: "★★★★☆",
+                comment: "Smells warm and cozy without being too much."
+            }
+        ],
+        "Sneakers": [
+            {
+                name: "Jordan",
+                rating: "★★★★★",
+                comment: "Comfortable for walking around all day."
+            },
+            {
+                name: "Alex",
+                rating: "★★★★☆",
+                comment: "Good sneakers and they look nice too."
+            }
+        ],
+        "Sturdy Trash Bags": [
+            {
+                name: "Chris",
+                rating: "★★★★★",
+                comment: "They hold a lot and did not rip on me."
+            },
+            {
+                name: "Tasha",
+                rating: "★★★★☆",
+                comment: "Good size for everyday use and pretty sturdy."
+            }
+        ],
+        "Sunglasses": [
+            {
+                name: "Morgan",
+                rating: "★★★★★",
+                comment: "Cute sunglasses and they feel comfortable."
+            },
+            {
+                name: "Riley",
+                rating: "★★★★☆",
+                comment: "Nice style and blocks the sun well."
+            }
+        ],
+        "VR Headset": [
+            {
+                name: "Drew",
+                rating: "★★★★★",
+                comment: "Really fun to use and the display is clear."
+            },
+            {
+                name: "Casey",
+                rating: "★★★★☆",
+                comment: "Works well and feels pretty immersive."
+            }
+        ],
+        "WakeUp Espresso Machine": [
+            {
+                name: "Jamie",
+                rating: "★★★★★",
+                comment: "Makes coffee fast and tastes really good."
+            },
+            {
+                name: "Avery",
+                rating: "★★★★☆",
+                comment: "Great machine. It took a minute to learn, but I like it."
+            }
+        ],
+        "Zcube Game Console": [
+            {
+                name: "Chris",
+                rating: "★★★★★",
+                comment: "Fun console and easy to set up."
+            },
+            {
+                name: "Taylor",
+                rating: "★★★★☆",
+                comment: "Good gaming system. Runs smoothly so far."
+            }
+        ]
+    };
+
+    const fallbackReviews = [
+        {
+            name: "Sam",
+            rating: "★★★★★",
+            comment: "Good quality and exactly what I expected."
+        },
+        {
+            name: "Riley",
+            rating: "★★★★☆",
+            comment: "Nice product overall. I would consider buying it again."
+        }
+    ];
+
+    function openProductModal(inventoryId, name, description, price, image, stock) {
+        document.getElementById("modalInventoryId").value = inventoryId;
+        document.getElementById("modalProductName").value = name;
+        document.getElementById("modalProductDescription").value = description;
+        document.getElementById("modalProductPrice").value = price;
+        document.getElementById("modalProductImage").value = image;
+
+        document.getElementById("modalImage").src = image;
+        document.getElementById("modalImage").alt = name;
+        document.getElementById("modalName").textContent = name;
+        document.getElementById("modalDescription").textContent = description;
+        document.getElementById("modalPrice").textContent = "$" + price + " each";
+        document.getElementById("modalStock").textContent = stock > 0 ? stock + " in stock" : "Out of stock";
+
+        const quantityInput = document.getElementById("modalQuantity");
+        quantityInput.value = 1;
+        quantityInput.max = stock;
+
+        showReviews(name);
+
+        document.getElementById("productModal").style.display = "block";
+    }
+
+    function closeProductModal() {
+        document.getElementById("productModal").style.display = "none";
+    }
+
+    function showReviews(productName) {
+        const reviewsContainer = document.getElementById("modalReviews");
+        const reviews = fakeReviews[productName] || fallbackReviews;
+
+        reviewsContainer.innerHTML = "";
+
+        reviews.forEach(review => {
+            const reviewCard = document.createElement("div");
+            reviewCard.classList.add("review-card");
+
+            reviewCard.innerHTML = `
+                <strong>${review.name}</strong>
+                <div class="review-rating">${review.rating}</div>
+                <p>${review.comment}</p>
+            `;
+
+            reviewsContainer.appendChild(reviewCard);
+        });
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("productModal");
+
+        if (event.target === modal) {
+            closeProductModal();
+        }
+    };
+
     // Save scroll position before add-to-cart submits
     document.querySelectorAll(".add-to-cart-form").forEach(form => {
         form.addEventListener("submit", function () {
@@ -495,6 +1121,7 @@
     // Restore scroll position after reload
     window.addEventListener("load", function () {
         const savedPosition = sessionStorage.getItem("scrollPosition");
+
         if (savedPosition !== null) {
             window.scrollTo(0, parseInt(savedPosition));
             sessionStorage.removeItem("scrollPosition");

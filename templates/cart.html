@@ -10,40 +10,23 @@
             margin: 0;
             padding: 20px;
             background: #2E3440;
+            color: #ECEFF4;
         }
 
-        .page-header {
-            background: linear-gradient(135deg, #3B4252, #2E3440);
-            color: #ECEFF4;
-            padding: 26px 20px;
-            border-radius: 12px;
-            margin: 0 auto 20px;
-            border: 1px solid #4C566A;
-            text-align: center;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        .site-banner {
             max-width: 1200px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #4C566A;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            background: #1D3348;
         }
 
-        .page-header h1 {
-            margin: 0;
-            color: #ECEFF4;
-            font-size: 44px;
-            font-weight: bold;
-        }
-
-        .page-header p {
-            margin: 8px 0 0;
-            color: #E5E9F0;
-            font-size: 20px;
-        }
-
-        .logo {
-            max-width: 220px;
-            height: auto;
+        .site-banner img {
+            width: 100%;
             display: block;
-            margin: 0 auto 12px;
-            background: #3B4252;
-            border-radius: 50px;
+            height: auto;
         }
 
         .cart-container {
@@ -55,30 +38,23 @@
             gap: 25px;
         }
 
-        .cart-items {
-            background: #3B4252;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #4C566A;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .cart-items h2 {
-            color: #ECEFF4;
-            margin-top: 0;
-        }
-
+        .cart-items,
         .cart-summary {
-            background: #3B4252;
+            background: #AEB8C6;
+            color: #2E3440;
             padding: 20px;
             border-radius: 12px;
-            border: 1px solid #4C566A;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #8F9AAA;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
+        .cart-items h2,
         .cart-summary h2 {
-            color: #ECEFF4;
+            color: #2E3440;
             margin-top: 0;
+            border-bottom: 1px solid #8F9AAA;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
         }
 
         .cart-item {
@@ -87,8 +63,8 @@
             align-items: center;
             padding: 15px;
             margin-bottom: 15px;
-            background: #434C5E;
-            border: 1px solid #4C566A;
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
             border-radius: 10px;
         }
 
@@ -97,6 +73,8 @@
             height: 90px;
             object-fit: cover;
             border-radius: 8px;
+            border: 1px solid #D8DEE9;
+            background: #D8DEE9;
         }
 
         .item-details {
@@ -106,18 +84,18 @@
         .item-details h3 {
             margin: 0 0 8px;
             font-size: 18px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .item-details p {
             margin: 0 0 10px;
-            color: #D8DEE9;
+            color: #3B4252;
             font-size: 14px;
         }
 
         .price {
             font-weight: bold;
-            color: #A3BE8C;
+            color: #2F5D34;
             margin-bottom: 10px;
         }
 
@@ -126,25 +104,27 @@
             align-items: center;
             gap: 10px;
             margin-top: 8px;
+            flex-wrap: wrap;
         }
 
         .item-actions label {
-            color: #D8DEE9;
+            color: #3B4252;
             font-size: 14px;
+            font-weight: bold;
         }
 
         .item-actions input {
             width: 60px;
             padding: 6px;
             text-align: center;
-            background: #2E3440;
-            border: 1px solid #4C566A;
+            background: #FFFFFF;
+            border: 1px solid #C7D0DD;
             border-radius: 5px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .cart-item > div > strong {
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .btn {
@@ -174,12 +154,12 @@
         }
 
         .btn-no-thanks {
-            background: #4C566A;
+            background: #5E81AC;
             color: #ECEFF4;
         }
 
         .btn-no-thanks:hover {
-            background: #5E81AC;
+            background: #81A1C1;
         }
 
         .summary-row {
@@ -187,16 +167,16 @@
             justify-content: space-between;
             margin: 12px 0;
             font-size: 16px;
-            color: #D8DEE9;
+            color: #3B4252;
         }
 
         .summary-total {
             font-size: 20px;
             font-weight: bold;
-            border-top: 1px solid #4C566A;
+            border-top: 1px solid #D8DEE9;
             margin-top: 15px;
             padding-top: 15px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .promo-input,
@@ -205,42 +185,44 @@
             padding: 10px;
             margin-top: 8px;
             box-sizing: border-box;
-            background: #2E3440;
-            border: 1px solid #4C566A;
+            background: #FFFFFF;
+            border: 1px solid #C7D0DD;
             border-radius: 5px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .promo-input::placeholder {
-            color: #88C0D0;
+            color: #7B8794;
         }
 
         .promo-label,
         .membership-label,
         .membership-current {
-            color: #D8DEE9;
+            color: #3B4252;
         }
 
         .discount-note {
-            color: #88C0D0;
+            color: #5E81AC;
             font-size: 13px;
             margin-top: 8px;
             margin-bottom: 0;
+            line-height: 1.4;
         }
 
-        .discount-box {
+        .discount-box,
+        .membership-box {
             margin-top: 20px;
             margin-bottom: 10px;
             padding: 15px;
-            background: #434C5E;
-            border: 1px solid #4C566A;
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
             border-radius: 8px;
         }
 
         .discount-box h3 {
             margin-top: 0;
             margin-bottom: 10px;
-            color: #ECEFF4;
+            color: #2E3440;
             font-size: 18px;
         }
 
@@ -249,7 +231,7 @@
             align-items: center;
             gap: 8px;
             margin: 10px 0;
-            color: #D8DEE9;
+            color: #3B4252;
             font-size: 14px;
         }
 
@@ -259,21 +241,12 @@
         }
 
         .discount-option small {
-            color: #88C0D0;
-        }
-
-        .membership-box {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            padding: 15px;
-            background: #434C5E;
-            border: 1px solid #4C566A;
-            border-radius: 8px;
+            color: #5E81AC;
         }
 
         .membership-box p {
             margin: 0 0 10px;
-            color: #D8DEE9;
+            color: #3B4252;
             font-size: 14px;
         }
 
@@ -281,34 +254,34 @@
             margin-top: 20px;
             margin-bottom: 15px;
             padding: 15px;
-            background: #434C5E;
-            border: 1px solid #88C0D0;
+            background: #D0F0CC;
+            border: 1px solid #A3D9A5;
             border-radius: 8px;
-            color: #ECEFF4;
+            color: #2F5D34;
         }
 
         .upgrade-card h3 {
             margin-top: 0;
             margin-bottom: 10px;
-            color: #88C0D0;
+            color: #2F5D34;
         }
 
         .upgrade-card p {
             margin: 6px 0;
-            color: #D8DEE9;
+            color: #2F5D34;
             font-size: 14px;
         }
 
         .membership-cart-item {
-            border: 1px solid #88C0D0;
+            border: 1px solid #8FB6D6;
         }
 
         .membership-icon {
             width: 120px;
             height: 90px;
             border-radius: 8px;
-            background: #5E81AC;
-            color: #ECEFF4;
+            background: #AAC8E3;
+            color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -330,31 +303,31 @@
             text-align: center;
             text-decoration: none;
             color: #ECEFF4;
+            font-weight: bold;
         }
 
         .checkout-btn {
             margin-top: 20px;
             background: #A3BE8C;
             color: #2E3440;
-            font-weight: bold;
         }
 
         .checkout-btn:hover {
-            background: #88C0D0;
+            background: #D0F0CC;
         }
 
         .back-btn {
             margin-top: 10px;
-            background: #4C566A;
+            background: #5E81AC;
         }
 
         .back-btn:hover {
-            background: #5E81AC;
+            background: #81A1C1;
         }
 
         .empty-cart {
             text-align: center;
-            color: #D8DEE9;
+            color: #3B4252;
             padding: 30px 0;
         }
 
@@ -370,8 +343,8 @@
         }
 
         .recommendation-modal-content {
-            background: #3B4252;
-            color: #ECEFF4;
+            background: #AEB8C6;
+            color: #2E3440;
             width: 80%;
             max-width: 900px;
             margin: 8% auto;
@@ -379,8 +352,17 @@
             border-radius: 12px;
             position: relative;
             text-align: center;
-            border: 1px solid #4C566A;
+            border: 1px solid #8F9AAA;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .recommendation-modal-content h2 {
+            color: #2E3440;
+            margin-top: 0;
+        }
+
+        .recommendation-modal-content p {
+            color: #3B4252;
         }
 
         .recommendation-grid {
@@ -392,11 +374,11 @@
         }
 
         .recommendation-card {
-            border: 1px solid #4C566A;
+            border: 1px solid #D8DEE9;
             border-radius: 10px;
             padding: 15px;
             width: 220px;
-            background: #434C5E;
+            background: #E5E9F0;
         }
 
         .recommendation-card img {
@@ -405,16 +387,17 @@
             object-fit: cover;
             border-radius: 8px;
             margin-bottom: 10px;
+            border: 1px solid #D8DEE9;
         }
 
         .recommendation-card h3 {
-            color: #ECEFF4;
+            color: #2E3440;
             font-size: 18px;
             margin-bottom: 8px;
         }
 
         .recommendation-card p {
-            color: #D8DEE9;
+            color: #3B4252;
             margin-bottom: 12px;
         }
 
@@ -428,16 +411,13 @@
                 padding: 12px;
             }
 
-            .page-header h1 {
-                font-size: 34px;
-            }
-
-            .page-header p {
-                font-size: 16px;
-            }
-
             .cart-container {
                 grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .cart-item img,
@@ -451,11 +431,9 @@
 </head>
 <body>
 
-<header class="page-header">
-    <img src="{{url_for('static', filename='elevate_retail_logo_4.png')}}" alt="Elevate Retail Logo" class="logo">
-    <h1>My Cart</h1>
-    <p>Review your items, discounts, and membership options before checkout.</p>
-</header>
+<div class="site-banner">
+    <img src="{{ url_for('static', filename='my_cart_banner.png') }}" alt="My Cart banner">
+</div>
 
 <div class="cart-container">
 

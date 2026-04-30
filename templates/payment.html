@@ -23,44 +23,38 @@
             max-width: 1200px;
         }
 
-        .page-header h1 {
-            margin: 0;
-            color: #ECEFF4;
-            font-size: 44px;
-            font-weight: bold;
+        .site-banner {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #4C566A;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            background: #1D3348;
         }
 
-        .page-header p {
-            margin: 8px 0 0;
-            color: #E5E9F0;
-            font-size: 20px;
-        }
-
-        .logo {
-            max-width: 220px;
-            height: auto;
+        .site-banner img {
+            width: 100%;
             display: block;
-            margin: 0 auto 12px;
-            background: #3B4252;
-            border-radius: 50px;
+            height: auto;
         }
 
         .payment-container {
             width: 90%;
             max-width: 600px;
             margin: 30px auto;
-            background: #3B4252;
+            background: #AEB8C6;
             padding: 25px;
             border-radius: 12px;
-            border: 1px solid #4C566A;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #8F9AAA;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
         label {
             font-weight: bold;
             margin-bottom: 8px;
             display: block;
-            color: #D8DEE9;
+            color: #2E3440;
         }
 
         select,
@@ -70,19 +64,19 @@
             font-size: 16px;
             margin-bottom: 20px;
             box-sizing: border-box;
-            background: #434C5E;
-            border: 1px solid #4C566A;
+            background: #FFFFFF;
+            border: 1px solid #C7D0DD;
             border-radius: 6px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         select option {
-            background: #434C5E;
-            color: #ECEFF4;
+            background: #FFFFFF;
+            color: #2E3440;
         }
 
         input::placeholder {
-            color: #88C0D0;
+            color: #7B8794;
         }
 
         .card-fields,
@@ -138,35 +132,35 @@
         .summary-box {
             margin-top: 25px;
             padding: 20px;
-            background: #434C5E;
-            border: 1px solid #4C566A;
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
             border-radius: 8px;
         }
 
         .summary-box h3 {
             margin-top: 0;
             margin-bottom: 15px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin: 10px 0;
-            color: #D8DEE9;
+            color: #3B4252;
         }
 
         .summary-total {
             font-weight: bold;
             font-size: 18px;
-            border-top: 1px solid #4C566A;
+            border-top: 1px solid #D8DEE9;
             padding-top: 12px;
             margin-top: 12px;
-            color: #ECEFF4;
+            color: #2E3440;
         }
 
         .summary-note {
-            color: #88C0D0;
+            color: #5E81AC;
             font-size: 13px;
             margin-top: 8px;
             margin-bottom: 0;
@@ -174,23 +168,15 @@
 
         .address-field {
             margin-top: 20px;
-            background: #434C5E;
+            background: #ECEFF4;
             padding: 20px;
-            border: 1px solid #4C566A;
+            border: 1px solid #D8DEE9;
             border-radius: 8px;
         }
 
         @media (max-width: 700px) {
             body {
                 padding: 12px;
-            }
-
-            .page-header h1 {
-                font-size: 34px;
-            }
-
-            .page-header p {
-                font-size: 16px;
             }
 
             .row {
@@ -212,11 +198,9 @@
 </head>
 <body>
 
-    <header class="page-header">
-        <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" class="logo" alt="Elevate Retail Logo">
-        <h1>Payment</h1>
-        <p>Choose your payment method and confirm your shipping address.</p>
-    </header>
+<div class="site-banner">
+    <img src="{{ url_for('static', filename='retail_page_banner.png') }}" alt="Elevate Retail banner">
+</div>
 
     <div class="payment-container">
         <form action="{{ url_for('cart.order_confirmation') }}" method="POST">

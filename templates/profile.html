@@ -9,40 +9,23 @@
             margin: 0;
             padding: 20px;
             background: #2E3440;
+            color: #ECEFF4;
         }
 
-        .page-header {
-            background: linear-gradient(135deg, #3B4252, #2E3440);
-            color: #ECEFF4;
-            padding: 26px 20px;
-            border-radius: 12px;
-            margin: 0 auto 20px;
-            border: 1px solid #4C566A;
-            text-align: center;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        .site-banner {
             max-width: 1200px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #4C566A;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            background: #1D3348;
         }
 
-        .page-header h1 {
-            margin: 0;
-            color: #ECEFF4;
-            font-size: 44px;
-            font-weight: bold;
-        }
-
-        .page-header p {
-            margin: 8px 0 0;
-            color: #E5E9F0;
-            font-size: 20px;
-        }
-
-        .logo {
-            max-width: 220px;
-            height: auto;
+        .site-banner img {
+            width: 100%;
             display: block;
-            margin: 0 auto 12px;
-            background: #3B4252;
-            border-radius: 50px;
+            height: auto;
         }
 
         .profile-container {
@@ -59,32 +42,34 @@
 
         .tab-btn {
             padding: 10px 20px;
-            border: 1px solid #4C566A;
+            border: 1px solid #8F9AAA;
             border-bottom: none;
             border-radius: 8px 8px 0 0;
-            background: #3B4252;
-            color: #88C0D0;
+            background: #AEB8C6;
+            color: #2E3440;
             cursor: pointer;
             font-size: 14px;
+            font-weight: bold;
         }
 
         .tab-btn.active {
-            background: #434C5E;
-            color: #ECEFF4;
+            background: #ECEFF4;
+            color: #2E3440;
             font-weight: bold;
         }
 
         .tab-btn:hover:not(.active) {
-            background: #4C566A;
+            background: #D8DEE9;
         }
 
         .tab-content {
             display: none;
-            background: #434C5E;
+            background: #AEB8C6;
             padding: 25px;
             border-radius: 0 8px 8px 8px;
-            border: 1px solid #4C566A;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #8F9AAA;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            color: #2E3440;
         }
 
         .tab-content.active {
@@ -92,16 +77,17 @@
         }
 
         h2, h3 {
-            color: #ECEFF4;
+            color: #2E3440;
             margin-top: 0;
         }
 
         label {
             display: block;
             font-size: 12px;
-            color: #88C0D0;
+            color: #3B4252;
             margin-bottom: 4px;
             margin-top: 12px;
+            font-weight: bold;
         }
 
         input[type="text"],
@@ -110,16 +96,16 @@
         select {
             width: 100%;
             box-sizing: border-box;
-            background: #2E3440;
-            border: 1px solid #4C566A;
+            background: #FFFFFF;
+            border: 1px solid #C7D0DD;
             border-radius: 6px;
-            color: #ECEFF4;
+            color: #2E3440;
             padding: 8px 10px;
             font-size: 14px;
         }
 
         input::placeholder {
-            color: #4C566A;
+            color: #7B8794;
         }
 
         .row {
@@ -138,6 +124,7 @@
             cursor: pointer;
             font-size: 14px;
             margin-top: 16px;
+            font-weight: bold;
         }
 
         .btn-save {
@@ -168,11 +155,27 @@
         }
 
         .btn-add:hover {
-            background: #88C0D0;
+            background: #D0F0CC;
             color: #2E3440;
         }
 
         .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            background: #5E81AC;
+            color: #ECEFF4;
+            padding: 9px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-back:hover {
+            background: #81A1C1;
+        }
+
+        .btn-signout {
             display: inline-block;
             margin-top: 20px;
             background: #4C566A;
@@ -181,26 +184,11 @@
             border-radius: 6px;
             text-decoration: none;
             font-size: 14px;
-        }
-
-        .btn-back:hover {
-            background: #5E81AC;
-        }
-
-        .btn-signout {
-            display: inline-block;
-            margin-top: 20px;
-            background: #4C566A;
-            color: #ff7575;
-            padding: 9px 18px;
-            border-radius: 6px;
-            border-color: #ff7575;
-            text-decoration: none;
-            font-size: 14px;
+            font-weight: bold;
         }
 
         .btn-signout:hover {
-            background: #5E81AC;
+            background: #BF616A;
             color: #ECEFF4;
         }
 
@@ -208,8 +196,8 @@
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid #4C566A;
-            color: #D8DEE9;
+            border-bottom: 1px solid #8F9AAA;
+            color: #2E3440;
             font-size: 14px;
         }
 
@@ -218,73 +206,86 @@
         }
 
         .info-label {
-            color: #88C0D0;
+            color: #3B4252;
             font-weight: bold;
         }
 
         .membership-badge {
-            background: #5E81AC;
-            color: #ECEFF4;
+            background: #AAC8E3;
+            color: #FFFFFF;
             padding: 3px 10px;
             border-radius: 20px;
             font-size: 13px;
+            font-weight: bold;
         }
 
         .membership-box {
             margin-top: 20px;
             margin-bottom: 10px;
             padding: 15px;
-            background: #3B4252;
-            border: 1px solid #4C566A;
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
             border-radius: 8px;
         }
 
         .membership-box p {
             margin: 0 0 10px;
-            color: #D8DEE9;
+            color: #3B4252;
             font-size: 14px;
         }
 
         .address-card {
-            background: #3B4252;
-            border: 1px solid #4C566A;
+            background: #ECEFF4;
+            border: 1px solid #D8DEE9;
             border-radius: 8px;
             padding: 12px 15px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #D8DEE9;
+            color: #2E3440;
             font-size: 14px;
         }
 
+        .address-card div {
+            color: #2E3440;
+        }
+
+        .address-card .address-subline {
+            color: #5E81AC;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+
         .flash {
-            background: #3B4252;
-            border: 1px solid #A3BE8C;
-            color: #A3BE8C;
+            background: #D0F0CC;
+            border: 1px solid #A3D9A5;
+            color: #2F5D34;
             border-radius: 6px;
             padding: 8px 12px;
             margin-bottom: 16px;
             font-size: 13px;
+            font-weight: bold;
         }
 
         .divider {
             border: none;
-            border-top: 1px solid #4C566A;
+            border-top: 1px solid #8F9AAA;
             margin: 20px 0;
+        }
+
+        .empty-message {
+            color: #2E3440;
+        }
+
+        .optional-text {
+            color: #5E81AC;
+            font-size: 11px;
         }
 
         @media (max-width: 700px) {
             body {
                 padding: 12px;
-            }
-
-            .page-header h1 {
-                font-size: 34px;
-            }
-
-            .page-header p {
-                font-size: 16px;
             }
 
             .row {
@@ -294,11 +295,12 @@
 
             .tabs {
                 flex-direction: column;
+                gap: 8px;
             }
 
             .tab-btn {
                 border-radius: 8px;
-                border-bottom: 1px solid #4C566A;
+                border-bottom: 1px solid #8F9AAA;
             }
 
             .tab-content {
@@ -315,11 +317,9 @@
 </head>
 <body>
 
-<header class="page-header">
-    <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
-    <h1>My Profile</h1>
-    <p>Manage your account details, membership, and saved addresses.</p>
-</header>
+<div class="site-banner">
+    <img src="{{ url_for('static', filename='retail_page_banner.png') }}" alt="Elevate Retail banner">
+</div>
 
 <div class="profile-container">
 
@@ -394,7 +394,7 @@
             <div class="address-card">
                 <div>
                     <div>{{ addr.line1 }}{% if addr.line2 %}, {{ addr.line2 }}{% endif %}</div>
-                    <div style="color:#88C0D0; margin-top:4px;">{{ addr.city }}, {{ addr.state }} {{ addr.zip }} &mdash; {{ addr.country }}</div>
+                    <div class="address-subline">{{ addr.city }}, {{ addr.state }} {{ addr.zip }} &mdash; {{ addr.country }}</div>
                 </div>
                 <form action="{{ url_for('user.delete_address') }}" method="POST">
                     <input type="hidden" name="address_id" value="{{ addr.id }}">
@@ -403,7 +403,7 @@
             </div>
             {% endfor %}
         {% else %}
-            <p style="color:#D8DEE9;">No saved addresses yet.</p>
+            <p class="empty-message">No saved addresses yet.</p>
         {% endif %}
 
         <hr class="divider">
@@ -411,7 +411,7 @@
         <form action="{{ url_for('user.add_address') }}" method="POST">
             <label>Address Line 1</label>
             <input type="text" name="line1" placeholder="123 Main St" required>
-            <label>Address Line 2 <span style="color:#4C566A; font-size:11px;">optional</span></label>
+            <label>Address Line 2 <span class="optional-text">optional</span></label>
             <input type="text" name="line2" placeholder="Apt 4B">
             <div class="row">
                 <div class="half">

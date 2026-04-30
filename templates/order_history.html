@@ -18,55 +18,37 @@
             margin: auto;
         }
 
-        .page-header {
-            background: linear-gradient(135deg, #3B4252, #2E3440);
-            color: #ECEFF4;
-            padding: 26px 20px;
-            border-radius: 12px;
-            margin: 0 auto 20px;
-            border: 1px solid #4C566A;
-            text-align: center;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        .site-banner {
             max-width: 1200px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #4C566A;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            background: #1D3348;
         }
 
-        .page-header h1 {
-            margin: 0;
-            color: #ECEFF4;
-            font-size: 44px;
-            font-weight: bold;
-        }
-
-        .page-header p {
-            margin: 8px 0 0;
-            color: #E5E9F0;
-            font-size: 20px;
-        }
-
-        .logo {
-            max-width: 220px;
-            height: auto;
+        .site-banner img {
+            width: 100%;
             display: block;
-            margin: 0 auto 12px;
-            background: #3B4252;
-            border-radius: 50px;
+            height: auto;
         }
 
         .order-card {
-            background: #ECEFF4;
+            background: #AEB8C6;
             color: #2E3440;
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
-            border: 1px solid #D8DEE9;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid #8F9AAA;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
         .order-card h2 {
             margin-top: 0;
             margin-bottom: 15px;
             color: #2E3440;
-            border-bottom: 1px solid #D8DEE9;
+            border-bottom: 1px solid #8F9AAA;
             padding-bottom: 8px;
         }
 
@@ -101,7 +83,7 @@
             gap: 15px;
             padding: 15px;
             border: 1px solid #D8DEE9;
-            background: #E5E9F0;
+            background: #ECEFF4;
             border-radius: 10px;
             margin-bottom: 12px;
             align-items: center;
@@ -138,12 +120,13 @@
         }
 
         .empty {
-            background: #ECEFF4;
+            background: #AEB8C6;
             color: #2E3440;
             padding: 20px;
             border-radius: 12px;
             text-align: center;
-            border: 1px solid #D8DEE9;
+            border: 1px solid #8F9AAA;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
         .buttons {
@@ -186,14 +169,6 @@
                 padding: 12px;
             }
 
-            .page-header h1 {
-                font-size: 34px;
-            }
-
-            .page-header p {
-                font-size: 16px;
-            }
-
             .item-card {
                 flex-direction: column;
                 align-items: flex-start;
@@ -214,11 +189,9 @@
 <body>
     <div class="container">
 
-        <header class="page-header">
-            <img src="{{ url_for('static', filename='elevate_retail_logo_4.png') }}" alt="Elevate Retail Logo" class="logo">
-            <h1>Order History</h1>
-            <p>Review your previous orders, payment details, and purchased items.</p>
-        </header>
+        <div class="site-banner">
+            <img src="{{ url_for('static', filename='order_history_banner.png') }}" alt="Order History banner">
+        </div>
 
         {% if orders %}
             {% for order in orders %}

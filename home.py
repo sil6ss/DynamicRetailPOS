@@ -56,6 +56,7 @@ def get_products():
             "quantity": item[6],
             "image": item[5],
         })
+
     return return_products
 
 
@@ -111,18 +112,29 @@ def add_to_cart():
 
     cart = session.get("cart", [])
 
+    # Gets quantity from the form.
+    # If no quantity is sent, it defaults to 1 so the old Add to Cart buttons still work.
+    try:
+        quantity = int(request.form.get("quantity", 1))
+    except ValueError:
+        quantity = 1
+
+    # Keeps quantity from being less than 1
+    if quantity < 1:
+        quantity = 1
+
     product = {
         "inventory_id": int(request.form.get("inventory_id")),
         "name": request.form.get("name"),
         "description": request.form.get("description"),
         "price": float(request.form.get("price", 0)),
         "image": request.form.get("image"),
-        "quantity": 1
+        "quantity": quantity
     }
 
     for item in cart:
         if item["inventory_id"] == product["inventory_id"]:
-            item["quantity"] += 1
+            item["quantity"] += quantity
             session["cart"] = cart
             session.modified = True
             return redirect(url_for("home_page"))

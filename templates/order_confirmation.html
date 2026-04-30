@@ -18,51 +18,20 @@
       margin: auto;
     }
 
-    .header {
-      background: linear-gradient(135deg, #3B4252, #2E3440);
-      color: #ECEFF4;
-      padding: 26px 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #4C566A;
-      text-align: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    .site-banner {
+        max-width: 1200px;
+        margin: 0 auto 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #4C566A;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        background: #1D3348;
     }
 
-    .header-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-
-    .check-icon {
-      width: 44px;
-      height: 44px;
-      border: 3px solid #A3BE8C;
-      color: #A3BE8C;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      font-weight: bold;
-      line-height: 1;
-      box-sizing: border-box;
-    }
-
-    .header h1 {
-      margin: 0;
-      color: #ECEFF4;
-      font-size: 44px;
-      font-weight: bold;
-    }
-
-    .header p {
-      margin: 0;
-      color: #E5E9F0;
-      font-size: 20px;
+    .site-banner img {
+        width: 100%;
+        display: block;
+        height: auto;
     }
 
     .grid {
@@ -72,19 +41,20 @@
     }
 
     .card {
-      background: #ECEFF4;
+      background: #AEB8C6;
       padding: 20px;
       border-radius: 12px;
       flex: 1;
-      border: 1px solid #D8DEE9;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      border: 1px solid #8F9AAA;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       min-width: 320px;
+      color: #2E3440;
     }
 
     .card h2 {
       color: #2E3440;
       margin-top: 0;
-      border-bottom: 1px solid #D8DEE9;
+      border-bottom: 1px solid #8F9AAA;
       padding-bottom: 8px;
       margin-bottom: 15px;
     }
@@ -102,7 +72,7 @@
       gap: 15px;
       padding: 15px;
       border: 1px solid #D8DEE9;
-      background: #E5E9F0;
+      background: #ECEFF4;
       border-radius: 10px;
       margin-bottom: 15px;
       align-items: center;
@@ -130,6 +100,13 @@
       white-space: nowrap;
     }
 
+    .summary {
+      background: #ECEFF4;
+      border: 1px solid #D8DEE9;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
     .summary p {
       display: flex;
       justify-content: space-between;
@@ -149,7 +126,7 @@
       font-weight: bold;
       margin-top: 15px;
       padding-top: 12px;
-      border-top: 1px solid #D8DEE9;
+      border-top: 1px solid #8F9AAA;
       color: #2E3440;
     }
 
@@ -192,7 +169,7 @@
 
     .btn-primary {
       background: #AAC8E3;
-      color: #ECEFF4;
+      color: #FFFFFF;
       border: 1px solid #8FB6D6;
     }
 
@@ -209,6 +186,27 @@
     .btn-secondary:hover {
       background: #81A1C1;
     }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      .product-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .product-item img {
+        width: 100%;
+        height: auto;
+        max-width: 250px;
+      }
+
+      .price {
+        align-self: flex-end;
+      }
+    }
   </style>
 </head>
 
@@ -216,13 +214,9 @@
 
 <div class="container">
 
-  <div class="header">
-    <div class="header-title">
-      <span class="check-icon">✓</span>
-      <h1>Order Confirmed</h1>
-    </div>
-    <p>Thank you for your purchase. Your order is being processed.</p>
-  </div>
+<div class="site-banner">
+    <img src="{{ url_for('static', filename='order_confirmation_banner.png') }}" alt="Order Confirmation banner">
+</div>
 
   <div class="grid">
 
