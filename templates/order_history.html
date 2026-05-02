@@ -5,12 +5,34 @@
     <title>Order History</title>
 
     <style>
+        html {
+            min-height: 100%;
+            background: #2E3440;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background: #2E3440;
             margin: 0;
             padding: 20px;
             color: #ECEFF4;
+            min-height: 100vh;
+            background: transparent;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.10), rgba(46, 52, 64, 0.25)),
+                url("{{ url_for('static', filename='product_page_background.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .container {
@@ -32,6 +54,23 @@
             width: 100%;
             display: block;
             height: auto;
+        }
+
+        .top-action-bar {
+            position: sticky;
+            top: 12px;
+            z-index: 90;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 0 auto 20px;
+            padding: 12px;
+            background: rgba(174, 184, 198, 0.94);
+            border: 1px solid #8F9AAA;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(4px);
         }
 
         .order-card {
@@ -77,6 +116,62 @@
 
         .value {
             color: #2E3440;
+        }
+
+        .order-action-area {
+            margin-top: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .cancel-order-btn {
+            background: #BF616A;
+            color: #FFFFFF;
+            border: 1px solid #A84F58;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cancel-order-btn:hover {
+            background: #A84F58;
+        }
+
+        .return-order-btn {
+            background: #D08770;
+            color: #FFFFFF;
+            border: 1px solid #BF6C55;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .return-order-btn:hover {
+            background: #BF6C55;
+        }
+
+        .cancelled-note {
+            background: #F2D6D9;
+            color: #7A2730;
+            border: 1px solid #D9A5AB;
+            border-radius: 8px;
+            padding: 10px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .returned-note {
+            background: #F5E1D8;
+            color: #7A3D2A;
+            border: 1px solid #D8B2A3;
+            border-radius: 8px;
+            padding: 10px;
+            font-weight: bold;
+            margin-top: 15px;
         }
 
         .items-section {
@@ -139,11 +234,6 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-
         .btn {
             display: inline-block;
             padding: 12px 18px;
@@ -179,9 +269,24 @@
                 padding: 12px;
             }
 
+            .top-action-bar {
+                top: 8px;
+                padding: 10px;
+            }
+
             .row {
                 flex-direction: column;
                 gap: 4px;
+            }
+
+            .order-action-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cancel-order-btn,
+            .return-order-btn {
+                width: 100%;
             }
 
             .item-card {
@@ -208,37 +313,92 @@
             <img src="{{ url_for('static', filename='order_history_banner.png') }}" alt="Order History banner">
         </div>
 
+        <div class="top-action-bar">
+            <a href="{{ url_for('home_page') }}" class="btn btn-primary">Continue Shopping</a>
+            <a href="{{ url_for('user.profile') }}" class="btn btn-secondary">My Profile</a>
+        </div>
+
         {% if orders %}
             {% for order in orders %}
             <div class="order-card">
 
                 <div class="order-details-box">
-                    <h2>Order #{{order.Order_ID}}</h2>
+                    <h2>Order #{{ order.Order_ID }}</h2>
 
                     <div class="row">
                         <span class="label">Date:</span>
-                        <span class="value">{{order.Formatted_Order_Date}}</span>
+                        <span class="value">{{ order.Formatted_Order_Date }}</span>
                     </div>
 
                     <div class="row">
                         <span class="label">Order Status:</span>
-                        <span class="value">{{order.Order_Status}}</span>
+                        <span class="value">{{ order.Order_Status }}</span>
                     </div>
 
                     <div class="row">
                         <span class="label">Fulfillment Status:</span>
-                        <span class="value">{{order.Fulfillment_Status}}</span>
+                        <span class="value">{{ order.Fulfillment_Status }}</span>
                     </div>
 
                     <div class="row">
                         <span class="label">Payment Method:</span>
-                        <span class="value">{{order.Payment_Method or 'N/A'}}</span>
+                        <span class="value">{{ order.Payment_Method or 'N/A' }}</span>
                     </div>
 
                     <div class="row">
                         <span class="label">Total:</span>
-                        <span class="value">${{"%.2f"|format(order.Order_Total)}}</span>
+                        <span class="value">${{ "%.2f"|format(order.Order_Total) }}</span>
                     </div>
+
+                    <div class="row">
+                        <span class="label">Shipping Status:</span>
+                        <span class="value">{{ order.Ship_Status or 'Not shipped yet' }}</span>
+                    </div>
+
+                    <div class="row">
+                        <span class="label">Carrier:</span>
+                        <span class="value">{{ order.Carrier or 'N/A' }}</span>
+                    </div>
+
+                    <div class="row">
+                        <span class="label">Tracking Number:</span>
+                        <span class="value">{{ order.Tracking_Number or 'N/A' }}</span>
+                    </div>
+
+                    <div class="row">
+                        <span class="label">Shipped On:</span>
+                        <span class="value">{{ order.Formatted_Shipped_On or 'N/A' }}</span>
+                    </div>
+
+                    <div class="row">
+                        <span class="label">Shipment Notes:</span>
+                        <span class="value">{{ order.Shipment_Notes or 'N/A' }}</span>
+                    </div>
+
+                    {% if order.Order_Status == 'Cancelled' %}
+                        <p class="cancelled-note">This order has been cancelled.</p>
+                    {% elif order.Ship_Status == 'Returned' %}
+                        <p class="returned-note">This order has been marked as returned.</p>
+                    {% endif %}
+
+                    <div class="order-action-area">
+                        {% if order.Can_Cancel %}
+                            <form action="{{ url_for('user.cancel_order', order_id=order.Order_ID) }}" method="POST">
+                                <button type="submit" class="cancel-order-btn">
+                                    Cancel Order
+                                </button>
+                            </form>
+                        {% endif %}
+
+                        {% if order.Can_Return %}
+                            <form action="{{ url_for('user.return_order', order_id=order.Order_ID) }}" method="POST">
+                                <button type="submit" class="return-order-btn">
+                                    Return Order
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+
                 </div>
 
                 <div class="items-details-box">
@@ -248,14 +408,14 @@
                         {% if order["items"] %}
                             {% for item in order["items"] %}
                             <div class="item-card">
-                                <img src="{{item.image}}" alt="{{item.name}}">
+                                <img src="{{ item.image }}" alt="{{ item.name }}">
                                 <div class="item-info">
-                                    <strong>{{item.name}}</strong>
-                                    <p>{{item.description}}</p>
-                                    <p>Qty: {{item.quantity}}</p>
+                                    <strong>{{ item.name }}</strong>
+                                    <p>{{ item.description }}</p>
+                                    <p>Qty: {{ item.quantity }}</p>
                                 </div>
                                 <div class="item-price">
-                                    ${{"%.2f"|format(item.line_total)}}
+                                    ${{ "%.2f"|format(item.line_total) }}
                                 </div>
                             </div>
                             {% endfor %}
@@ -272,11 +432,6 @@
                 <p>No orders found for this account.</p>
             </div>
         {% endif %}
-
-        <div class="buttons">
-            <a href="{{url_for('home_page')}}" class="btn btn-primary">Continue Shopping</a>
-            <a href="{{url_for('user.profile')}}" class="btn btn-secondary">Back to Profile</a>
-        </div>
 
     </div>
 </body>

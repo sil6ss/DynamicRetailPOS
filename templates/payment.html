@@ -4,11 +4,34 @@
     <meta charset="UTF-8" />
     <title>Payment</title>
     <style>
+        html {
+            min-height: 100%;
+            background: #2E3440;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background: #2E3440;
+            color: #ECEFF4;
+            min-height: 100vh;
+            background: transparent;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.10), rgba(46, 52, 64, 0.25)),
+                url("{{ url_for('static', filename='product_page_background.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .page-header {

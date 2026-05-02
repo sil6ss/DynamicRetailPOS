@@ -5,12 +5,34 @@
     <title>Elevate Retail</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=shopping_cart" />
     <style>
+        html {
+            min-height: 100%;
+            background: #2E3440;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background: #2E3440;
             color: #ECEFF4;
+            min-height: 100vh;
+            background: transparent;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.10), rgba(46, 52, 64, 0.25)),
+                url("{{ url_for('static', filename='product_page_background.png') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .page-header {
@@ -74,6 +96,7 @@
             border-radius: 8px;
             max-width: 1200px;
             margin: 0 auto;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.20);
         }
 
         .promo-banner-static span {
@@ -91,17 +114,19 @@
         }
 
         .items-container h2 {
-            color: #ECEFF4;
+            color: #1D3348;
             margin-bottom: 0;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.65);
+            font-size: 28px;
         }
 
         .items {
-            background: #AEB8C6;
+            background: rgba(174, 184, 198, 0.92);
             color: #2E3440;
             padding: 20px;
             border-radius: 12px;
             border: 1px solid #8F9AAA;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
@@ -145,6 +170,8 @@
             margin: 0 0 8px;
             font-size: 18px;
             color: #2E3440;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #C7D0DD;
         }
 
         .item-details p {
@@ -187,26 +214,88 @@
             position: fixed;
             top: 20px;
             right: 0;
-            transition: right 0.3s ease;
+            transition: right 0.3s ease, background 0.2s ease, box-shadow 0.2s ease;
             width: 40px;
             height: 40px;
             display: grid;
             place-items: center;
-            background: #4C566A;
+            background: linear-gradient(145deg, #4C566A, #3B4252);
             color: #ECEFF4;
             border: none;
             border-radius: 5px 0 0 5px;
             outline: none;
             cursor: pointer;
-            z-index: 100;
+            z-index: 110;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.18);
         }
 
         .cart-side-toggle:hover {
-            background: #81A1C1;
+            background: linear-gradient(145deg, #5E81AC, #4C6F9E);
         }
 
         .cart-side-toggle.panel-open {
-            right: 340px;
+            right: 300px;
+        }
+
+        .cart-count-badge {
+            position: absolute;
+            top: -7px;
+            left: -7px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            border-radius: 50px;
+            background: #BF616A;
+            color: #FFFFFF;
+            border: 2px solid #ECEFF4;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 18px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .item-added-alert {
+            position: fixed;
+            top: 68px;
+            right: 0;
+            background: #ECEFF4;
+            color: #2E3440;
+            border: 1px solid #8F9AAA;
+            border-radius: 10px 0 0 10px;
+            padding: 10px 12px;
+            min-width: 120px;
+            max-width: 190px;
+            z-index: 120;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+            font-size: 13px;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateX(15px);
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease, right 0.3s ease;
+        }
+
+        body.side-cart-is-open .item-added-alert {
+            right: 300px;
+        }
+
+        .item-added-alert.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .item-added-alert::after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            border-width: 0 8px 8px 8px;
+            border-style: solid;
+            border-color: transparent transparent #ECEFF4 transparent;
         }
 
         .side-panel {
@@ -280,9 +369,10 @@
         }
 
         .cart-side-tile {
+            position: relative;
             display: flex;
             gap: 12px;
-            align-items: center;
+            align-items: flex-start;
             text-align: left;
             padding: 10px;
             margin-bottom: 10px;
@@ -291,7 +381,7 @@
             border-radius: 10px;
             color: #2E3440;
             width: 100%;
-            min-height: 90px;
+            min-height: 105px;
             box-sizing: border-box;
         }
 
@@ -305,19 +395,84 @@
             flex-shrink: 0;
         }
 
-        .cart-side-text {
-            display: flex;
-            align-items: center;
+        .cart-side-content {
             flex: 1;
-            height: 100%;
+            min-width: 0;
+            padding-bottom: 22px;
         }
 
-        .cart-side-text p {
-            margin: 0;
-            font-size: 15px;
-            line-height: 1.2;
-            word-break: normal;
+        .cart-side-title {
+            margin: 0 0 8px;
+            font-size: 14px;
+            line-height: 1.25;
             color: #2E3440;
+            font-weight: bold;
+            padding-right: 32px;
+            word-break: normal;
+            overflow-wrap: anywhere;
+        }
+
+        .side-cart-qty-form {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .side-cart-qty-form label {
+            color: #3B4252;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .side-cart-qty-input {
+            width: 52px;
+            padding: 4px;
+            text-align: center;
+            background: #FFFFFF;
+            border: 1px solid #C7D0DD;
+            border-radius: 5px;
+            color: #2E3440;
+        }
+
+        .side-cart-line-price {
+            position: absolute;
+            right: 10px;
+            bottom: 8px;
+            color: #2F5D34;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .side-cart-remove-form {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            margin: 0;
+            z-index: 3;
+        }
+
+        .side-cart-remove-form .side-cart-remove-btn {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent !important;
+            color: #2E3440 !important;
+            border: none !important;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            box-shadow: none !important;
+            opacity: 1 !important;
+            text-shadow: none !important;
+        }
+
+        .side-cart-remove-form .side-cart-remove-btn:hover {
+            color: #BF616A !important;
+            background: transparent !important;
         }
 
         .empty-cart {
@@ -330,6 +485,10 @@
             border-radius: 5px;
             color: #2E3440;
             padding: 6px 10px;
+        }
+
+        .search-form input[type="text"] {
+            width: 300px;
         }
 
         input[type="text"]::placeholder {
@@ -378,27 +537,121 @@
             font-weight: bold;
         }
 
-        .signin-btn {
+        .signin-btn,
+        .my-orders-btn,
+        .capstone-qr-toggle {
             position: fixed;
-            top: 20px;
             left: 0;
-            background: #4C566A;
+            background: linear-gradient(145deg, #4C566A, #3B4252);
             color: #ECEFF4;
             text-decoration: none;
             padding: 0 14px;
             height: 40px;
             line-height: 40px;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 6px 6px 0;
             font-size: 14px;
             z-index: 100;
-            transition: background 0.2s ease;
+            width: 125px;
+            text-align: center;
+            box-sizing: border-box;
+            white-space: nowrap;
+            transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.18);
         }
 
-        .signin-btn:hover {
+        .signin-btn {
+            top: 20px;
+        }
+
+        .my-orders-btn {
+            top: 68px;
+        }
+
+        .capstone-qr-toggle {
+            top: 116px;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        .signin-btn:hover,
+        .my-orders-btn:hover,
+        .capstone-qr-toggle:hover {
+            background: linear-gradient(145deg, #5E81AC, #4C6F9E);
+            transform: translateY(-1px);
+            box-shadow:
+                0 6px 12px rgba(0, 0, 0, 0.32),
+                inset 0 1px 0 rgba(255, 255, 255, 0.22),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.20);
+        }
+
+        .capstone-qr-panel {
+            display: none;
+            position: fixed;
+            top: 164px;
+            left: 0;
+            width: 230px;
+            background: #ECEFF4;
+            color: #2E3440;
+            border: 1px solid #8F9AAA;
+            border-radius: 0 10px 10px 0;
+            padding: 14px;
+            z-index: 100;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            box-sizing: border-box;
+        }
+
+        .capstone-qr-panel.open {
+            display: block;
+        }
+
+        .capstone-qr-panel h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+            color: #2E3440;
+            line-height: 1.25;
+            text-align: center;
+        }
+
+        .capstone-qr-panel img {
+            width: 100%;
+            max-width: 170px;
+            display: block;
+            margin: 0 auto 10px;
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 8px;
+            border: 1px solid #D8DEE9;
+            box-sizing: border-box;
+        }
+
+        .capstone-qr-panel p {
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: #3B4252;
+            line-height: 1.35;
+            text-align: center;
+        }
+
+        .capstone-qr-panel a {
+            display: block;
+            text-align: center;
+            background: #5E81AC;
+            color: #ECEFF4;
+            text-decoration: none;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .capstone-qr-panel a:hover {
             background: #81A1C1;
         }
 
-        /* Product details modal */
         .product-modal {
             display: none;
             position: fixed;
@@ -469,8 +722,10 @@
         }
 
         .modal-details h2 {
-            margin: 0 30px 10px 0;
+            margin: 0 30px 12px 0;
             color: #2E3440;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #C7D0DD;
         }
 
         .modal-description {
@@ -621,14 +876,36 @@
 </div>
 
 {% if current_user.is_authenticated %}
-    <a href="{{ url_for('user.profile') }}" class="signin-btn">My Profile</a>
+    <div class="account-links">
+        <a href="{{ url_for('user.profile') }}" class="signin-btn">My Profile</a>
+        <a href="{{ url_for('user.order_history') }}" class="my-orders-btn">My Orders</a>
+    </div>
 {% else %}
     <a href="{{ url_for('auth.login') }}" class="signin-btn">Sign In</a>
 {% endif %}
 
-<button class="cart-side-toggle" type="button">
-    <span class="material-symbols-outlined cart-icon">shopping_cart</span>
+<button class="capstone-qr-toggle" type="button" onclick="toggleCapstoneQR()">
+    Capstone Site
 </button>
+
+<div id="capstoneQRPanel" class="capstone-qr-panel">
+    <h3>Meet the 2026 Capstone Class</h3>
+    <img src="{{ url_for('static', filename='capstone_qr.png') }}" alt="Capstone showcase QR code">
+    <p>Scan or click to learn more about this year’s Capstone class.</p>
+    <a href="https://capstoneft.com/" target="_blank">Open 2026 Capstone Site</a>
+</div>
+
+{% set cart_count = cart | sum(attribute='quantity') if cart else 0 %}
+
+<button class="cart-side-toggle" type="button" aria-label="Open cart">
+    <span class="material-symbols-outlined cart-icon">shopping_cart</span>
+
+    {% if cart_count > 0 %}
+        <span class="cart-count-badge">{{ cart_count }}</span>
+    {% endif %}
+</button>
+
+<div id="itemAddedAlert" class="item-added-alert"></div>
 
 <div class="cart-wrapper">
     <div class="cart-main">
@@ -636,7 +913,7 @@
             <h2>Available Products</h2>
 
             <form action="/" method="GET" class="search-form">
-                <input type="text" name="q" placeholder="Search items..." value="{{ request.args.get('q', '') }}">
+                <input type="text" name="q" placeholder="Search products or manufacturer..." value="{{ request.args.get('q', '') }}">
                 <button type="submit">Search</button>
 
                 {% if request.args.get('q') %}
@@ -676,7 +953,7 @@
                     </div>
                     {% endfor %}
                 {% else %}
-                    <p class="empty-cart">Nothing is Available.</p>
+                    <p class="empty-cart">No products found. Try searching by product name or manufacturer.</p>
                 {% endif %}
             </section>
         </div>
@@ -686,9 +963,36 @@
         {% if cart %}
             {% for item in cart %}
             <div class="cart-side-tile">
+
+                <form action="{{ url_for('cart.remove_from_cart') }}" method="POST" class="side-cart-remove-form">
+                    <input type="hidden" name="product_name" value="{{ item.name }}">
+                    <input type="hidden" name="redirect_to" value="home">
+                    <button type="submit" class="side-cart-remove-btn" aria-label="Remove {{ item.name }}">×</button>
+                </form>
+
                 <img src="{{ item.image }}" alt="{{ item.name }}">
-                <div class="cart-side-text">
-                    <p>{{item.quantity }}x {{ item.name}}</p>
+
+                <div class="cart-side-content">
+                    <p class="cart-side-title">{{ item.name }}</p>
+
+                    <form action="{{ url_for('cart.update_cart') }}" method="POST" class="side-cart-qty-form">
+                        <input type="hidden" name="product_name" value="{{ item.name }}">
+                        <input type="hidden" name="redirect_to" value="home">
+
+                        <label for="side-qty-{{ loop.index }}">Qty:</label>
+                        <input
+                            type="number"
+                            id="side-qty-{{ loop.index }}"
+                            name="quantity"
+                            value="{{ item.quantity }}"
+                            min="1"
+                            class="side-cart-qty-input"
+                            onchange="this.form.submit()">
+                    </form>
+                </div>
+
+                <div class="side-cart-line-price">
+                    ${{ "%.2f"|format(item.price * item.quantity) }}
                 </div>
             </div>
             {% endfor %}
@@ -698,8 +1002,8 @@
     </div>
 
     <div class="cart-side-summary">
-        <p class="cart-subtotal">Subtotal: ${{ "%.2f"|format(cart_subtotal) }}</p>
-        <p class="side-deal-message">{{ side_cart_deal_message }}</p>
+        <p class="cart-subtotal">Subtotal: ${{"%.2f"|format(cart_subtotal)}}</p>
+        <p class="side-deal-message">{{side_cart_deal_message}}</p>
 
         <form action="/cart">
             <button class="proceed-cart" type="submit">Proceed to Cart</button>
@@ -707,7 +1011,6 @@
     </div>
 </div>
 
-<!-- Product Details Modal -->
 <div id="productModal" class="product-modal">
     <div class="product-modal-content">
         <span class="modal-close" onclick="closeProductModal()">&times;</span>
@@ -750,10 +1053,22 @@
 </div>
 
 <script>
-    document.querySelector(".cart-side-toggle").addEventListener("click", () => {
-        document.querySelector(".cart-wrapper").classList.toggle("side-panel-open");
-        document.querySelector(".cart-side-toggle").classList.toggle("panel-open");
+    const cartWrapper = document.querySelector(".cart-wrapper");
+    const cartToggle = document.querySelector(".cart-side-toggle");
+
+    cartToggle.addEventListener("click", () => {
+        const willOpen = !cartWrapper.classList.contains("side-panel-open");
+
+        cartWrapper.classList.toggle("side-panel-open");
+        cartToggle.classList.toggle("panel-open");
+        document.body.classList.toggle("side-cart-is-open", willOpen);
+
+        sessionStorage.setItem("sideCartOpen", willOpen ? "true" : "false");
     });
+
+    function toggleCapstoneQR() {
+        document.getElementById("capstoneQRPanel").classList.toggle("open");
+    }
 
     async function refreshInventory() {
         try {
@@ -978,9 +1293,9 @@
                 comment: "Comfortable and cute for everyday wear."
             },
             {
-                name: "Maya",
+                name: "Ming Ling",
                 rating: "★★★★☆",
-                comment: "Good sandals. They fit true to size."
+                comment: "Good sandals. Fit true to size. Husband loved."
             }
         ],
         "Serenity by Jan Cinnamon Candle": [
@@ -1076,9 +1391,9 @@
             comment: "Good quality and exactly what I expected."
         },
         {
-            name: "Riley",
+            name: "Ming Ling",
             rating: "★★★★☆",
-            comment: "Nice product overall. I would consider buying it again."
+            comment: "Nice product, very good."
         }
     ];
 
@@ -1137,20 +1452,62 @@
         }
     };
 
-    // Save scroll position before add-to-cart submits
     document.querySelectorAll(".add-to-cart-form").forEach(form => {
         form.addEventListener("submit", function () {
+            const quantityInput = form.querySelector('input[name="quantity"]');
+            const quantity = quantityInput ? quantityInput.value : "1";
+            const sideCartIsOpen = cartWrapper.classList.contains("side-panel-open");
+
             sessionStorage.setItem("scrollPosition", window.scrollY);
+            sessionStorage.setItem("sideCartOpen", sideCartIsOpen ? "true" : "false");
+            sessionStorage.setItem("itemAddedQuantity", quantity);
         });
     });
 
-    // Restore scroll position after reload
+    document.querySelectorAll(".side-cart-qty-form").forEach(form => {
+        form.addEventListener("submit", function () {
+            sessionStorage.setItem("scrollPosition", window.scrollY);
+            sessionStorage.setItem("sideCartOpen", "true");
+        });
+    });
+
+    document.querySelectorAll(".side-cart-remove-form").forEach(form => {
+        form.addEventListener("submit", function () {
+            sessionStorage.setItem("scrollPosition", window.scrollY);
+            sessionStorage.setItem("sideCartOpen", "true");
+        });
+    });
+
     window.addEventListener("load", function () {
         const savedPosition = sessionStorage.getItem("scrollPosition");
+        const shouldOpenSideCart = sessionStorage.getItem("sideCartOpen");
+        const itemAddedQuantity = sessionStorage.getItem("itemAddedQuantity");
+        const itemAddedAlert = document.getElementById("itemAddedAlert");
 
         if (savedPosition !== null) {
             window.scrollTo(0, parseInt(savedPosition));
             sessionStorage.removeItem("scrollPosition");
+        }
+
+        if (shouldOpenSideCart === "true") {
+            cartWrapper.classList.add("side-panel-open");
+            cartToggle.classList.add("panel-open");
+            document.body.classList.add("side-cart-is-open");
+        } else {
+            cartWrapper.classList.remove("side-panel-open");
+            cartToggle.classList.remove("panel-open");
+            document.body.classList.remove("side-cart-is-open");
+        }
+
+        if (itemAddedQuantity && itemAddedAlert) {
+            itemAddedAlert.textContent = `${itemAddedQuantity} added to cart`;
+            itemAddedAlert.classList.add("show");
+
+            setTimeout(() => {
+                itemAddedAlert.classList.remove("show");
+            }, 2600);
+
+            sessionStorage.removeItem("itemAddedQuantity");
         }
     });
 </script>

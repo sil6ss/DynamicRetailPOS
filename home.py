@@ -1,4 +1,4 @@
-# Created by: Silas Young, Katie Southard, Alex Puckett, Mesh Young
+# Created by: Silas Young, Katie Southard, Alex Puckett
 # 03/2026 - 05/2026 Elevate Retail Capstone Class, Forsyth Tech Community College
 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
@@ -22,8 +22,8 @@ login_manager.init_app(home)
 
 # Retrieve all products from database containing fields necessary for webpage
 def get_products():
-    conn = get_db_connection()  # CHANGED: open a fresh connection for this function
-    cursor = conn.cursor()  # CHANGED: create a fresh cursor for this function
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
     cursor.execute("""
         SELECT
@@ -33,17 +33,22 @@ def get_products():
             Product_Category.Category_Name,
             Inventory.Unit_Price,
             Product.Image_URL,
-            Inventory.Quantity
+            Inventory.Quantity,
+            Supplier.Supplier_Name
         FROM Product
         INNER JOIN Inventory
             ON Product.Product_ID = Inventory.Product_ID
         INNER JOIN Product_Category
             ON Product.Category_ID = Product_Category.Category_ID
+        LEFT JOIN Supplier
+            ON Product.Supplier_ID = Supplier.Supplier_ID
+        WHERE Product.Deleted_At IS NULL
     """)
+
     sql_products = cursor.fetchall()
 
-    cursor.close()  # CHANGED: close cursor after query is done
-    conn.close()  # CHANGED: close connection after query is done
+    cursor.close()
+    conn.close()
 
     return_products = []
 
@@ -52,9 +57,11 @@ def get_products():
             "inventory_id": item[0],
             "name": item[1],
             "description": item[2],
+            "category": item[3],
             "price": float(item[4]),
-            "quantity": item[6],
             "image": item[5],
+            "quantity": item[6],
+            "supplier": item[7] or ""
         })
 
     return return_products
@@ -79,14 +86,18 @@ def get_side_cart_deal_info(cart):
 # Base home page, with lists for the retrieved products and cart info for the side panel
 @home.route("/")
 def home_page():
-    products = get_products()  # CHANGED: always reload products from DB so stock updates show immediately
+    products = get_products()
     cart = session.get("cart", [])
     query = request.args.get("q", "").strip().lower()
 
     cart_subtotal, side_cart_deal_message = get_side_cart_deal_info(cart)
 
     if query:
-        filtered_products = [item for item in products if query in item["name"].lower()]  # CHANGED: search fresh DB data
+        filtered_products = [
+            item for item in products
+            if query in item["name"].lower()
+            or query in item["supplier"].lower()
+        ]
     else:
         filtered_products = products
 
@@ -101,7 +112,7 @@ def home_page():
 
 @home.route("/api/products")
 def api_products():
-    return jsonify(get_products())  # new route for background inventory refresh
+    return jsonify(get_products())
 
 
 # Adds products to cart when clicked upon
@@ -147,21 +158,23 @@ def add_to_cart():
 
 @login_manager.user_loader
 def load_user(user_id):
-    conn = get_db_connection()  # CHANGED: open a fresh connection when loading a user
-    cursor = conn.cursor()  # CHANGED: create a fresh cursor when loading a user
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
     cursor.execute("""
         SELECT Customer_ID, First_Name, Last_Name, Email
         FROM Customer
         WHERE Customer_ID = %s
     """, (user_id,))
+
     row = cursor.fetchone()
 
-    cursor.close()  # CHANGED: close cursor after query is done
-    conn.close()  # CHANGED: close connection after query is done
+    cursor.close()
+    conn.close()
 
     if row:
         return User(row[0], row[1], row[2], row[3])
+
     return None
 
 

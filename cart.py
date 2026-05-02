@@ -315,6 +315,7 @@ def update_discount_choice():
 def update_cart():
     product_name = request.form["product_name"]
     quantity = int(request.form["quantity"])
+    redirect_to = request.form.get("redirect_to", "cart")
 
     cart_items = session.get("cart", [])
 
@@ -327,6 +328,11 @@ def update_cart():
             break
 
     session["cart"] = cart_items
+    session.modified = True
+
+    if redirect_to == "home":
+        return redirect(url_for("home_page"))
+
     return redirect(url_for("cart.cart"))
 
 
@@ -354,11 +360,18 @@ def apply_promo():
 @login_required
 def remove_from_cart():
     product_name = request.form["product_name"]
+    redirect_to = request.form.get("redirect_to", "cart")
+
     cart_items = session.get("cart", [])
 
     cart_items = [item for item in cart_items if item["name"] != product_name]
 
     session["cart"] = cart_items
+    session.modified = True
+
+    if redirect_to == "home":
+        return redirect(url_for("home_page"))
+
     return redirect(url_for("cart.cart"))
 
 
@@ -520,6 +533,11 @@ def order_confirmation():
 
     payment_method = request.form.get("payment_method", "N/A")
 
+    # Carrier can come from a dropdown later. For now, default to UPS if nothing is sent.
+    selected_carrier = request.form.get("carrier", "UPS").strip()
+    if not selected_carrier:
+        selected_carrier = "UPS"
+
     current_level = get_current_membership_level(current_user.id)
     selected_level = session.get("selected_membership_level", current_level)
 
@@ -554,7 +572,94 @@ def order_confirmation():
     cursor = conn.cursor()
 
     try:
-        # 1. Insert order
+        # 1. Make sure there is an address ID for Shipping.
+        # Shipping table requires Shipping_Address_ID and Billing_Address_ID.
+        shipping_address_id = None
+
+        if (
+            address["Address_Line_l"]
+            and address["City"]
+            and address["State"]
+            and address["Zip_Code"]
+            and address["Country"]
+        ):
+            cursor.execute("""
+                SELECT Address_ID
+                FROM Customer_Address
+                WHERE Customer_ID = %s
+                  AND Address_Line_l = %s
+                  AND IFNULL(Address_Line_2, '') = %s
+                  AND City = %s
+                  AND State = %s
+                  AND Zip_Code = %s
+                  AND Country = %s
+                  AND Deleted_At IS NULL
+                LIMIT 1
+            """, (
+                current_user.id,
+                address["Address_Line_l"],
+                address["Address_Line_2"],
+                address["City"],
+                address["State"],
+                address["Zip_Code"],
+                address["Country"]
+            ))
+
+            existing_address = cursor.fetchone()
+
+            if existing_address:
+                shipping_address_id = existing_address[0]
+            else:
+                cursor.execute("""
+                    INSERT INTO Customer_Address
+                    (Address_Line_l, Address_Line_2, City, State, Zip_Code, Country, Customer_ID)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, (
+                    address["Address_Line_l"],
+                    address["Address_Line_2"] or None,
+                    address["City"],
+                    address["State"],
+                    address["Zip_Code"],
+                    address["Country"],
+                    current_user.id
+                ))
+
+                shipping_address_id = cursor.lastrowid
+
+        # If no address was submitted, try to use the newest saved address.
+        if not shipping_address_id:
+            cursor.execute("""
+                SELECT Address_ID, Address_Line_l, Address_Line_2, City, State, Zip_Code, Country
+                FROM Customer_Address
+                WHERE Customer_ID = %s
+                  AND Deleted_At IS NULL
+                ORDER BY Address_ID DESC
+                LIMIT 1
+            """, (current_user.id,))
+
+            saved_address = cursor.fetchone()
+
+            if saved_address:
+                shipping_address_id = saved_address[0]
+
+                # Fill address info for the confirmation page if needed.
+                address = {
+                    "Address_Line_l": saved_address[1],
+                    "Address_Line_2": saved_address[2],
+                    "City": saved_address[3],
+                    "State": saved_address[4],
+                    "Zip_Code": saved_address[5],
+                    "Country": saved_address[6]
+                }
+
+        # If there is still no address, stop checkout because Shipping requires it.
+        if not shipping_address_id:
+            conn.rollback()
+            return "Database error: A shipping address is required to create a shipping record.", 500
+
+        billing_address_id = shipping_address_id
+
+        # 2. Insert order
         cursor.execute("""
             INSERT INTO `Order` (
                 Customer_ID,
@@ -574,7 +679,7 @@ def order_confirmation():
 
         order_id = cursor.lastrowid
 
-        # 2. Insert order items
+        # 3. Insert order items
         subtotal = totals["subtotal"]
         discountable_subtotal = max(
             subtotal - totals["membership_discount"] - totals["applied_discount_amount"],
@@ -628,7 +733,7 @@ def order_confirmation():
                 "line_total": round(line_amount + line_tax, 2)
             })
 
-        # 3. Insert payment
+        # 4. Insert payment
         cursor.execute("""
             INSERT INTO Payment (
                 Order_ID,
@@ -648,7 +753,7 @@ def order_confirmation():
             datetime.now()
         ))
 
-        # 3.5 Update order from Pending to Paid after payment is confirmed
+        # 5. Update order from Pending to Paid after payment is confirmed
         cursor.execute("""
             UPDATE `Order`
             SET Order_Status = %s
@@ -658,7 +763,38 @@ def order_confirmation():
             order_id
         ))
 
-        # 4. Update membership level if upgraded
+        # 6. Create initial shipping row for shipping team.
+        # Shipping can update this later with real status, shipped date, tracking, etc.
+        cursor.execute("""
+            INSERT INTO Shipping (
+                Order_ID,
+                Cost,
+                Shipped_On,
+                Expected_By,
+                Ship_Status,
+                Carrier,
+                Tracking_Number,
+                Shipping_Address_ID,
+                Billing_Address_ID,
+                Shipment_Notes,
+                Return_Reason
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (
+            order_id,
+            0.00,
+            None,
+            None,
+            "Pending",
+            selected_carrier,
+            "Pending",
+            shipping_address_id,
+            billing_address_id,
+            "Shipping label not created yet.",
+            None
+        ))
+
+        # 7. Update membership level if upgraded
         if selected_level != current_level:
             cursor.execute("""
                 UPDATE Customer
@@ -666,46 +802,6 @@ def order_confirmation():
                     Updated_At = UTC_TIMESTAMP()
                 WHERE Customer_ID = %s
             """, (selected_level, current_user.id))
-
-        # 5. Save shipping address to customer account if checkbox was checked
-        if save_address and address["Address_Line_l"] and address["City"] and address["State"] and address["Zip_Code"] and address["Country"]:
-            cursor.execute("""
-                SELECT Address_ID
-                FROM Customer_Address
-                WHERE Customer_ID = %s
-                  AND Address_Line_l = %s
-                  AND IFNULL(Address_Line_2, '') = %s
-                  AND City = %s
-                  AND State = %s
-                  AND Zip_Code = %s
-                  AND Country = %s
-                  AND Deleted_At IS NULL
-            """, (
-                current_user.id,
-                address["Address_Line_l"],
-                address["Address_Line_2"],
-                address["City"],
-                address["State"],
-                address["Zip_Code"],
-                address["Country"]
-            ))
-
-            existing_address = cursor.fetchone()
-
-            if not existing_address:
-                cursor.execute("""
-                    INSERT INTO Customer_Address
-                    (Address_Line_l, Address_Line_2, City, State, Zip_Code, Country, Customer_ID)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """, (
-                    address["Address_Line_l"],
-                    address["Address_Line_2"] or None,
-                    address["City"],
-                    address["State"],
-                    address["Zip_Code"],
-                    address["Country"],
-                    current_user.id
-                ))
 
         conn.commit()
 
@@ -718,14 +814,14 @@ def order_confirmation():
             "membership_discount": totals["membership_discount"],
             "promo_discount": totals["promo_discount"],
             "auto_discount": totals["auto_discount"],
-            "auto_discount_rate": totals["auto_discount_rate"],
             "auto_deal_message": totals["auto_deal_message"],
             "discount_choice": totals["discount_choice"],
             "applied_discount_name": totals["applied_discount_name"],
             "applied_discount_amount": totals["applied_discount_amount"],
             "membership_upgrade_cost": totals["membership_upgrade_cost"],
             "tax": totals["sales_tax"],
-            "total_paid": totals["total"]
+            "total_paid": totals["total"],
+            "carrier": selected_carrier
         }
 
         # Clear session
