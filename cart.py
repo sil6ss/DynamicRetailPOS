@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 import mysql.connector
 from datetime import datetime
 from db import get_db_connection
+import random
+import string
 
 cart_bp = Blueprint("cart", __name__)
 cart_bp.secret_key = "elevate-retail-secret-key"
@@ -765,6 +767,7 @@ def order_confirmation():
 
         # 6. Create initial shipping row for shipping team.
         # Shipping can update this later with real status, shipped date, tracking, etc.
+        tracking_number = ''.join(random.choices(string.ascii_uppercase + string.digits, k=18))
         cursor.execute("""
             INSERT INTO Shipping (
                 Order_ID,
@@ -787,7 +790,7 @@ def order_confirmation():
             None,
             "Pending",
             selected_carrier,
-            "Pending",
+            tracking_number,
             shipping_address_id,
             billing_address_id,
             "Shipping label not created yet.",
